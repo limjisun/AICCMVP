@@ -1,0 +1,90 @@
+/* ===================================
+   Base Styles - Fonts, Reset, Body
+   =================================== */
+
+/* Fonts */
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-SemiBold.woff") format("woff");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-SemiBold.ttf") format("truetype");
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 13px;
+}
+
+body {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #282828;
+  background: #FFFFFF;
+  line-height: 1.6;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 100vh;
+  min-width: 1336px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E0E0E0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A6AAC2;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8E92A8;
+}
