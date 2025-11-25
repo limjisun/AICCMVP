@@ -16,3 +16,6 @@
 
 /* Session Detail Panel Styles */
 @import './session-detail.css';
+
+/* Emotion Chart Styles */
+@import './emotion-chart.css';

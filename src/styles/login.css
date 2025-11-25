@@ -1,0 +1,133 @@
+/* Login Page Styles */
+
+.login-page {
+  width: 100%;
+  height: 100vh;
+  background: #E9E9EF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 620px;
+}
+
+.login-box {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 76px 105px;
+  min-height: 530px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.login-header {
+  margin-bottom: 40px;
+}
+
+.login-logo {
+}
+
+.login-subtitle {
+  font-size: 22px;
+  color: #666666;
+  margin-top: 9px;
+}
+
+/* Form */
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.login-input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.login-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 48px;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #282828;
+  font-size: 15px;
+  color: #333333;
+  background: #ffffff;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+
+.login-input:focus {
+  outline: none;
+  border: 1px solid #282828;
+  background: #F5F5F5;
+}
+
+.login-input::placeholder {
+  color: #999999;
+}
+
+.login-button {
+  width: 100%;
+  height: 48px;
+  background: #282828;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.login-button:hover {
+  background: #1a1a1a;
+}
+
+.login-button:active {
+  background: #000000;
+}
+.login-error{
+  color: #D65E5F;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.login-error::before{
+  content: '';
+  width: 14px;
+  height: 13px;
+  display: block;
+  background-image: url("../assets/images/icon-loginerror.png");
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.login-footer p {
+  font-size: 13px;
+  color: #777;
+   font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  margin: 0;
+}

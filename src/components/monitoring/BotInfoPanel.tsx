@@ -35,20 +35,20 @@ const operationMetrics: Metric[] = [
   },
   {
     label: '요청수(분당)',
-    value: 1.2,
+    value: 35,
     unit: '초',
     tooltip: '분당 처리된 고객 발화 요청의 평균 건수',
   },
   {
     label: '인텐트 파악율',
-    value: 1.2,
-    unit: '초',
+    value: 92,
+    unit: '%',
     tooltip: '전체 고객 발화 중 AI가 인텐트를 정확히 인식한 비율',
   },
   {
     label: '미응답수',
-    value: 1.2,
-    unit: '초',
+    value: 2,
+    unit: '건',
     tooltip: '고객 발화에 대해 AI가 응답하지 못한 횟수',
   },
 ];
@@ -56,20 +56,19 @@ const operationMetrics: Metric[] = [
 const qualityMetrics3Col: Metric[] = [
   {
     label: '응답 성공률',
-    value: 0.8,
-    unit: '초',
+    value: 92,
+    unit: '%',
     tooltip: '전체 요청 중 정상적으로 응답을 반환한 비율',
   },
   {
     label: '비정상 응답수',
-    value: 1.2,
-    unit: '초',
+    value: 3,
+    unit: '건',
     tooltip: '오류·중단 등으로 비정상 응답이 발생한 횟수',
   },
   {
     label: '평균 대화 길이',
-    value: 1.2,
-    unit: '초',
+    value: 5.7,
     tooltip: '한 세션 내 AI와 고객 간 주고받은 발화 쌍의 평균 횟수',
   },
 ];
@@ -77,14 +76,14 @@ const qualityMetrics3Col: Metric[] = [
 const qualityMetrics2Col: Metric[] = [
   {
     label: '응답 지연 경고 발생',
-    value: 0.8,
-    unit: '초',
+    value: 2,
+    unit: '회',
     tooltip: '설정된 기준 시간 이상 응답이 지연된 횟수',
   },
   {
     label: '인텐트 파악 급하락(1시간 이내)',
-    value: 1.2,
-    unit: '초',
+    value: -1.2,
+    unit: '%',
     tooltip: '최근 1시간 동안 AI가 인텐트 파악이 급하락 한 비율',
   },
 ];

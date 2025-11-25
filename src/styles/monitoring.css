@@ -13,7 +13,6 @@
   gap: 20px;
   height: 100%;
 }
-
 .page-title {
   font-size: 24px;
   font-weight: 500;
@@ -146,7 +145,18 @@
 .ai-bot-info__value .unit {
   font-size: 15px;
 }
-
+@media (max-width: 1600px) {
+  .ai-bot-wrap {
+    width: 250px;
+  }
+  .ai-bot-info__boxwrap{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .ai-bot-info__each{
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
 .ai-bot-entire {
   flex: 1;
   background: #FFFFFF;
@@ -280,7 +290,12 @@
   display: flex;
   gap: 24px;
 }
-
+@media (max-width: 1770px) {
+  .ai-filter-tabs {
+    display: flex;
+    gap: 5px;
+  }
+}
 .ai-filter-tab {
   font-size: 13px;
   padding: 6px 0;
@@ -344,6 +359,29 @@
   min-height: 0;
 }
 
+.ai-session-empty {
+    width: 100%;
+}
+
+.ai-session-empty__content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.ai-session-empty__description1{
+  font-size: 17px;
+  font-weight: 500;
+  color: #282828;
+}
+
+.ai-session-empty__description2 {
+  font-size: 13px;
+  color: #555;
+}
+
 .ai-session-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -352,6 +390,16 @@
   overflow-y: auto;
   overflow-x: hidden;
   align-content: start;
+}
+@media (max-width: 1884px) {
+  .ai-session-grid {
+   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+@media (max-width: 1440px) {
+  .ai-session-grid {
+   grid-template-columns: repeat(auto-fill, minmax(142px, 1fr));
+  }
 }
 
 /* Session Detail styles moved to session-detail.css */
@@ -405,6 +453,7 @@
 .session-card__btn {
   display: block;
   width: 14px;
+  min-width: 14px;
   height: 14px;
   background-image: url("../assets/images/ico-arw.png");
   cursor: pointer;
