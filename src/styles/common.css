@@ -116,3 +116,27 @@
     transform: translateX(0);
   }
 }
+
+
+/*버튼*/
+.btn-flex-wrap{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.btn-basic{
+  height: 26px;
+  line-height: 26px;
+  padding: 0 15px;
+  border-radius: 4px;
+}
+.btn-basic.btn-line{
+  border: 1px solid #72B5BB;
+  font-weight: 600;
+  color: #509298;
+}
+.btn-basic.btn-bg{
+  background: #4BB6C0;
+  font-weight: 600;
+  color: #FFF;
+}

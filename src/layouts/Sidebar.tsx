@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 type NavItem = {
@@ -16,6 +16,14 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [indicatorTop, setIndicatorTop] = useState(86);
+
+  // 현재 경로에 맞게 indicator 위치 설정
+  useEffect(() => {
+    const currentIndex = navItems.findIndex(item => item.path === location.pathname);
+    if (currentIndex !== -1) {
+      setIndicatorTop(86 + currentIndex * 66);
+    }
+  }, [location.pathname]);
 
   const handleNavClick = (path: string, index: number) => {
     navigate(path);

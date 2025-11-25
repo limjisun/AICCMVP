@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { Session, EmotionPoint } from '../../types';
 import ProgressBar from '../common/ProgressBar';
-import EmotionChart from './EmotionChart';
+import EmotionChart from '../common/EmotionChart';
 
 interface SessionDetailProps {
   session: Session | null;

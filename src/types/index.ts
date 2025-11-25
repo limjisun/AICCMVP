@@ -97,3 +97,31 @@ export interface EmotionAnalysis {
   recovery: number; // 감정 회복 구간 (부정 → 중립/긍정)
   deterioration: number; // 감정 악화 구간 (부정 → 부정 → 매우부정)
 }
+
+// Keyword types
+export type KeywordTabType = 'synonym' | 'misrecognition';
+export type UsageAreaType = 'forbidden' | 'negative'; // 금지어, 부정어
+
+// 동의어 항목
+export interface SynonymItem {
+  id: string;
+  date: string; // 최근수정일시
+  representative: string; // 대표 키워드
+  synonyms: string; // 유사어 (쉼표로 구분)
+  usageArea: UsageAreaType; // 사용영역 (금지어/부정어)
+  isNew?: boolean; // 신규건 여부
+  isDirty?: boolean; // 수정된 상태 (저장 버튼 표시용)
+}
+
+// 오인식 교정 항목
+export interface MisrecognitionItem {
+  id: string;
+  date: string; // 최근수정일시
+  correctedWord: string; // 교정어
+  misrecognizedWord: string; // 오인식어
+  isNew?: boolean; // 신규건 여부
+  isDirty?: boolean; // 수정된 상태 (저장 버튼 표시용)
+}
+
+// 통합 타입
+export type KeywordItem = SynonymItem | MisrecognitionItem;
