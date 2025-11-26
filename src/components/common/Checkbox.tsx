@@ -1,4 +1,7 @@
 import React from 'react';
+import checkboxOn from '../../assets/images/checkbox_on.png';
+import checkboxOff from '../../assets/images/checkbox_off.png';
+import './Checkbox.css';
 
 interface CheckboxProps {
   checked?: boolean;
@@ -13,22 +16,22 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   disabled = false,
   indeterminate = false,
 }) => {
-  const checkboxRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (checkboxRef.current) {
-      checkboxRef.current.indeterminate = indeterminate;
+  const handleClick = () => {
+    if (!disabled) {
+      onCheckedChange?.(!checked);
     }
-  }, [indeterminate]);
+  };
 
   return (
-    <input
-      ref={checkboxRef}
-      type="checkbox"
-      className="checkbox"
-      checked={checked}
-      onChange={(e) => onCheckedChange?.(e.target.checked)}
-      disabled={disabled}
-    />
+    <div
+      className={`checkbox-wrapper ${disabled ? 'checkbox-disabled' : ''}`}
+      onClick={handleClick}
+    >
+      <img
+        src={checked || indeterminate ? checkboxOn : checkboxOff}
+        alt={checked ? 'checked' : 'unchecked'}
+        className="checkbox-image"
+      />
+    </div>
   );
 };

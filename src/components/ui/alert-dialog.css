@@ -1,0 +1,80 @@
+/* Alert Dialog Overlay */
+.alert-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Alert Dialog Content */
+.alert-dialog-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 51;
+  width: 100%;
+  max-width: 250px;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 24px 24px 20px 24px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+  border: 1px solid #555;
+}
+
+/* Alert Dialog Header */
+.alert-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Alert Dialog Title */
+.alert-dialog-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #282828;
+  margin: 0;
+}
+
+/* Alert Dialog Description */
+.alert-dialog-description {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+/* Alert Dialog Footer */
+.alert-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top:10px;
+  border-top:1px solid #EBEBEB;
+}
+/* Alert Dialog Action Button */
+.alert-dialog-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: none;
+  background-color: #3b82f6;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.alert-dialog-action:hover {
+  background-color: #2563eb;
+}
+
+.alert-dialog-action:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}

@@ -1,0 +1,105 @@
+.custom-select {
+  position: relative;
+  display: inline-block;
+  min-width: 120px;
+  user-select: none;
+}
+
+.custom-select--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Trigger */
+.custom-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 8px;
+  height: 28px;
+  background-color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  gap: 8px;
+}
+
+.custom-select__trigger:hover:not(.custom-select--disabled .custom-select__trigger) {
+  border-color: #9ca3af;
+}
+/*
+.custom-select--open .custom-select__trigger {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+*/
+.custom-select__value {
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-select__arrow {
+  width: 12px;
+  height: 12px;
+  background-image: url("../../assets/images/input_dro.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+}
+
+.custom-select--open .custom-select__arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.custom-select__dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background-color: white;
+  border: 1px solid #555;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* 아래로 표시 */
+.custom-select__dropdown--bottom {
+  top: calc(100% + 4px);
+}
+
+/* 위로 표시 */
+.custom-select__dropdown--top {
+  bottom: calc(100% + 4px);
+}
+
+.custom-select__option {
+  padding: 4px 8px;
+  border-radius: 3px;
+  color: #282828;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.custom-select__option:hover {
+  background-color: #EBECF0;
+}
+
+.custom-select__option--selected {
+  background-color: #EBECF0;
+  color: #282828;
+  font-weight: 500;
+}
+
+.custom-select__option--selected:hover {
+  background-color: #EBECF0;
+}

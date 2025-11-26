@@ -19,6 +19,8 @@ import type {
 import { Dropdown } from '../common/DropdownMenu';
 import { Checkbox } from '../common/Checkbox';
 import { EditableCell } from '../common/EditableCell';
+import { Select } from '../common/Select';
+import Tooltip from '../common/Tooltip';
 import {
   Table,
   TableHeader,
@@ -27,6 +29,17 @@ import {
   TableHead,
   TableCell,
 } from '../common/Table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog';
 
 interface KeywordsTableProps {
   tabType: KeywordTabType;
@@ -66,35 +79,6 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     return `${year}/${month}/${day} ${hours}:${minutes}`;
-  };
-
-  // 샘플 엑셀 파일 다운로드
-  const downloadSample = () => {
-    const tabName = tabType === 'synonym' ? '동의어' : '오인식교정';
-    const sampleData =
-      tabType === 'synonym'
-        ? [
-            {
-              '최근수정일시': '2025/11/05 15:13',
-              '대표 키워드': '인출',
-              '유사어': '거래처, 계산',
-              '사용영역': '금지어',
-            },
-          ]
-        : [
-            {
-              '최근수정일시': '2025/11/05 15:13',
-              '교정어': '핵심스',
-              '오인식어': '핵시스, 핵시ㅅ',
-            },
-          ];
-
-    const worksheet = XLSX.utils.json_to_sheet(sampleData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, tabName);
-
-    const fileName = `${tabName}_${getTodayDate()}.xlsx`;
-    XLSX.writeFile(workbook, fileName);
   };
 
   // 양식 엑셀 파일 다운로드 (빈 파일)
@@ -242,19 +226,12 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
   // 선택된 행 삭제
   const handleDeleteSelected = () => {
     const selectedIds = Object.keys(rowSelection);
-    if (selectedIds.length === 0) {
-      alert('삭제할 항목을 선택해주세요.');
-      return;
-    }
-
-    if (confirm(`${selectedIds.length}개 항목을 삭제하시겠습니까?`)) {
-      const selectedIndexes = selectedIds.map(Number);
-      const filteredData = filteredKeywords.filter(
-        (_, index) => !selectedIndexes.includes(index)
-      );
-      setKeywords(filteredData as any);
-      setRowSelection({});
-    }
+    const selectedIndexes = selectedIds.map(Number);
+    const filteredData = filteredKeywords.filter(
+      (_, index) => !selectedIndexes.includes(index)
+    );
+    setKeywords(filteredData as any);
+    setRowSelection({});
   };
 
   // 취소 (신규건만 - 행 삭제)
@@ -388,7 +365,11 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
       },
       {
         accessorKey: 'usageArea',
-        header: '사용영역',
+        header: () => (
+          <Tooltip text="금지어: 고객 응대 시 사용하지 말아야 할 단어 / 부정어: 부정적인 의미를 가진 단어">
+            사용영역
+          </Tooltip>
+        ),
         cell: ({ row }) => {
           const kw = row.original;
           return (
@@ -421,7 +402,7 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
       },
       {
         id: 'actions',
-        header: '버튼',
+        header: '',
         cell: ({ row }) => {
           const kw = row.original;
           return (
@@ -429,18 +410,20 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
               {/* 신규건: 취소, 저장 */}
               {kw.isNew && (
                 <>
-                  <button
-                    onClick={() => handleCancel(kw.id)}
-                    className="btn-table btn-cancel"
-                  >
-                    취소
-                  </button>
-                  <button
-                    onClick={() => handleSave(kw.id)}
-                    className="btn-table btn-save"
-                  >
-                    저장
-                  </button>
+                <div className="btn-flex-wrap">
+                    <button
+                      onClick={() => handleCancel(kw.id)}
+                      className="btn-table btn-cancel"
+                    >
+                      취소
+                    </button>
+                    <button
+                      onClick={() => handleSave(kw.id)}
+                      className="btn-table btn-save"
+                    >
+                      저장
+                    </button>
+                  </div>
                 </>
               )}
               {/* 저장된 건: 삭제만 (수정하지 않은 경우) */}
@@ -648,18 +631,20 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
           onChange={handleFileUpload}
           className="keywords-upload-input"
         />
+        <div className="btn-flex-wrap">
+          <Dropdown
+            trigger={<button className="btn-basic btn-line">업로드</button>}
+            items={[
+              { label: '양식 다운로드', onClick: downloadTemplate },
+              {
+                label: '엑셀 업로드',
+                onClick: () => fileInputRef.current?.click(),
+              },
+            ]}
+          />
+          <button className="btn-basic btn-bg">추가</button>
+        </div>
 
-        <Dropdown
-          trigger={<button className="keywords-upload-btn">업로드</button>}
-          items={[
-            { label: '양식 다운로드', onClick: downloadTemplate },
-            { label: '샘플 다운로드', onClick: downloadSample },
-            {
-              label: '엑셀 업로드',
-              onClick: () => fileInputRef.current?.click(),
-            },
-          ]}
-        />
       </div>
     );
   }
@@ -668,35 +653,53 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
     <div className="keywords-grid-container">
       {/* 상단 액션 */}
       <div className="keywords-actions">
-        <input
-          type="text"
-          className="keywords-search"
-          placeholder="검색어 입력"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <div className="keywords-actions-right">
-          <button
-            className="keywords-btn keywords-btn--sm keywords-btn--primary"
-            onClick={handleAddNew}
-          >
-            신규 추가
-          </button>
-          <button
-            className="keywords-btn keywords-btn--sm keywords-btn--danger"
-            onClick={handleDeleteSelected}
-          >
-            선택 삭제
-          </button>
+        <div className="keywords-search-wrap">
+          <input
+            type="text"
+            className="keywords-search"
+            placeholder="검색어 입력"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="btn-flex-wrap">
+        
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="btn-basic btn-line"
+                disabled={Object.keys(rowSelection).length === 0}
+              >
+                삭제
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                   대표키워드 {Object.keys(rowSelection).length}를 삭제하시겠어요?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                   대표키워드를 삭제하면 관련된 <br/>
+                  {tabType === 'synonym' ? '모든 동의어 세트가 함께 제거됩니다.' : '모든 오인식어 세트가 함께 제거됩니다.'}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>닫기</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteSelected}>
+                  삭제
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          
           <Dropdown
             trigger={
-              <button className="keywords-btn keywords-btn--sm keywords-btn--primary">
+              <button className="btn-basic btn-line">
                 업로드
               </button>
             }
             items={[
               { label: '양식 다운로드', onClick: downloadTemplate },
-              { label: '샘플 다운로드', onClick: downloadSample },
               {
                 label: '엑셀 업로드',
                 onClick: () => fileInputRef.current?.click(),
@@ -710,6 +713,13 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
             onChange={handleFileUpload}
             className="keywords-upload-input"
           />
+          <button
+            className="btn-basic btn-bg"
+            onClick={handleAddNew}
+          >
+            추가
+          </button>
+          
         </div>
       </div>
 
@@ -728,7 +738,7 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
                       header.column.getCanSort() ? 'cursor-pointer' : ''
                     }
                   >
-                    <div className="table-head-content">
+                    <div className={`table-head-content ${header.column.id === 'select' ? 'table-head-center' : ''}`}>
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -748,7 +758,10 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
             {table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className={cell.column.id === 'select' ? 'table-cell-center' : ''}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -760,56 +773,91 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
 
       {/* 페이지네이션 */}
       <div className="table-pagination">
-        <div className="pagination-info">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected
-        </div>
         <div className="pagination-controls">
+          {/* 이전 그룹으로 (10페이지씩) */}
           <button
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            className="pagination-btn"
+            onClick={() => {
+              const currentPage = table.getState().pagination.pageIndex;
+              const maxPages = 10;
+              const currentGroup = Math.floor(currentPage / maxPages);
+              const prevGroupStart = (currentGroup - 1) * maxPages;
+              table.setPageIndex(Math.max(0, prevGroupStart));
+            }}
+            disabled={table.getState().pagination.pageIndex < 10}
+            className="pagination-arrow pagination-left01"
           >
-            {'<<'}
           </button>
+
+          {/* 이전 페이지 */}
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="pagination-btn"
+            className="pagination-arrow pagination-left02"
           >
-            {'<'}
           </button>
-          <span className="pagination-page">
-            Page {table.getState().pagination.pageIndex + 1} of{' '}
-            {table.getPageCount()}
-          </span>
+
+          {/* 페이지 번호 버튼들 */}
+          {(() => {
+            const currentPage = table.getState().pagination.pageIndex;
+            const pageCount = table.getPageCount();
+            const maxPages = 10;
+
+            // 시작 페이지 계산 (10개씩 묶음)
+            const startPage = Math.floor(currentPage / maxPages) * maxPages;
+            const endPage = Math.min(startPage + maxPages, pageCount);
+
+            const pages = [];
+            for (let i = startPage; i < endPage; i++) {
+              pages.push(
+                <button
+                  key={i}
+                  onClick={() => table.setPageIndex(i)}
+                  className={`pagination-btn pagination-number ${
+                    currentPage === i ? 'active' : ''
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              );
+            }
+
+            return pages;
+          })()}
+
+          {/* 다음 페이지 */}
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="pagination-btn"
+            className="pagination-arrow pagination-right02"
           >
-            {'>'}
           </button>
+
+          {/* 다음 그룹으로 (10페이지씩) */}
           <button
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            className="pagination-btn"
-          >
-            {'>>'}
-          </button>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
+            onClick={() => {
+              const currentPage = table.getState().pagination.pageIndex;
+              const pageCount = table.getPageCount();
+              const maxPages = 10;
+              const currentGroup = Math.floor(currentPage / maxPages);
+              const nextGroupStart = (currentGroup + 1) * maxPages;
+              table.setPageIndex(Math.min(pageCount - 1, nextGroupStart));
             }}
-            className="pagination-select"
+            disabled={
+              Math.floor(table.getState().pagination.pageIndex / 10) >=
+              Math.floor((table.getPageCount() - 1) / 10)
+            }
+            className="pagination-arrow pagination-right01"
           >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
+          </button>
+
+          <Select
+            value={table.getState().pagination.pageSize}
+            options={[10, 20, 30, 40, 50].map((pageSize) => ({
+              label: `Show ${pageSize}`,
+              value: pageSize,
+            }))}
+            onChange={(value) => table.setPageSize(Number(value))}
+          />
         </div>
       </div>
     </div>

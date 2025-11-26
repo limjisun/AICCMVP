@@ -1,20 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import tooltipIcon from '../../assets/images/icon-tooltip.png';
+import './Tooltip.css';
 
 interface TooltipProps {
   text: string;
+  children?: React.ReactNode;
+  showIcon?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ text }) => {
+const Tooltip: React.FC<TooltipProps> = ({ text, children, showIcon = true }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const iconRef = useRef<HTMLSpanElement>(null);
+  const triggerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (isVisible && iconRef.current) {
-      const rect = iconRef.current.getBoundingClientRect();
+    if (isVisible && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
       setPosition({
-        top: rect.top + window.scrollY,
+        top: rect.top + window.scrollY - 8,
         left: rect.left + window.scrollX + rect.width / 2,
       });
     }
@@ -23,24 +27,23 @@ const Tooltip: React.FC<TooltipProps> = ({ text }) => {
   return (
     <>
       <span
-        ref={iconRef}
-        className="tooltip"
-        data-tooltip={text}
+        ref={triggerRef}
+        className="tooltip-trigger-wrapper"
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
-      />
-      {isVisible && createPortal(
-        <span
-          className="tooltip__content"
-          style={{
-            top: `${position.top}px`,
-            left: `${position.left}px`,
-          }}
-        >
-          {text}
-        </span>,
-        document.body
-      )}
+      >
+        {children}
+        {showIcon && (
+          <img src={tooltipIcon} alt="tooltip" className="tooltip-icon" />
+        )}
+      </span>
+      {isVisible &&
+        createPortal(
+          <span className="tooltip-content" style={{ top: `${position.top}px`, left: `${position.left}px` }}>
+            {text}
+          </span>,
+          document.body
+        )}
     </>
   );
 };
