@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICC MVP</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__logo">
+            <img src="assets/images/logo.png" alt="Logo">
+        </div>
+        <div class="header__user">
+            <div class="header__profile">
+                <img src="assets/images/icon-my.png" alt="Profile">
+                <span class="header__username">유저Bot</span>
+            </div>
+            <button class="header__logout">
+                <img src="assets/images/icon-logout.png" alt="Logout">
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar__nav">
+                <!-- 엘리베이터 인디케이터 (흰색 반원 배경) -->
+                <div class="sidebar__indicator">
+                    <div class="sidebar__icon sidebar__icon--active"></div>
+                </div>
+
+                <!-- 네비게이션 아이템들 -->
+                <a href="javascript:void(0);" class="sidebar__item sidebar__item--active" data-page="monitoring" data-icon="monitor" title="AI모니터링">
+                    <div class="sidebar__icon"></div>
+                </a>
+                <a href="javascript:void(0);" class="sidebar__item" data-page="consultation" data-icon="list" title="AI상담이력">
+                    <div class="sidebar__icon"></div>
+                </a>
+                <a href="javascript:void(0);" class="sidebar__item" data-page="keywords" data-icon="keyword" title="키워드">
+                    <div class="sidebar__icon"></div>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="contents-wrap"></div>
+    </div>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/tab-navigation.js"></script>
+</body>
+</html>

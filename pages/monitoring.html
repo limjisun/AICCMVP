@@ -1,0 +1,280 @@
+<div class="page-monitor">
+    <!-- 왼쪽 영역 (340px 고정) -->
+    <div class="ai-bot-wrap">
+        <h3 class="page-title">AI 모니터링</h3>
+        
+        <div class="ai-bot-info">
+            <div class="ai-bot-info__titlebox">
+                <div class="ai-bot-info__title">유미Bot</div>
+                <!-- 상태 클래스: --normal(정상/초록), --warning(지연/노랑), --error(오류/빨강), --pending(대기/주황) -->
+                <div class="ai-bot-info__state ai-bot-info__state--normal">정상</div>
+            </div>
+            <div class="ai-bot-info__box">
+                <div class="ai-bot-info__metric">
+                    <h3>동작지표</h3>
+                    <div class="ai-bot-info__boxwrap">
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                평균 응답 시간<span class="tooltip" data-tooltip="고객 발화 후, AI 상담사가 응답을 시작하기까지의 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">0.8<span class="unit">초</span></span>
+                        </div>
+                         <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                평균 의도 파악 시간<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               평균 지식 답변 시간<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               최대 응답 시간<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               요청수(분당)<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                         <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               인텐트 파악율<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                         <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               미응답수<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-bot-info__metric">
+                    <h3>대화품질</h3>
+                   <div class="ai-bot-info__boxwrap ai-bot-info__boxwrap--col3">
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                응답성공률<span class="tooltip" data-tooltip="고객 발화 후, AI 상담사가 응답을 시작하기까지의 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">0.8<span class="unit">초</span></span>
+                        </div>
+                         <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                비정상 응답수<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                               평균 대화길이<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-bot-info__metric">
+                    <h3>대화품질</h3>
+                   <div class="ai-bot-info__boxwrap ai-bot-info__boxwrap--col2-custom">
+                        <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                응답 지연 경고 발생<span class="tooltip" data-tooltip="고객 발화 후, AI 상담사가 응답을 시작하기까지의 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">0.8<span class="unit">초</span></span>
+                        </div>
+                         <div class="ai-bot-info__each">
+                            <span class="ai-bot-info__label">
+                                인텐트 파악 급하락(1시간 이내)<span class="tooltip" data-tooltip="고객 발화 후, 인텐트(의도)를 식별하는 데 걸린 평균 시간"></span>
+                            </span>
+                            <span class="ai-bot-info__value">1.2<span class="unit">초</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 영역 (나머지) -->
+    <div class="ai-bot-entire">
+        <!-- 상단 탭 영역 -->
+        <div class="ai-entire-header">
+            
+            <div class="ai-entire-tabs">
+                <button class="ai-entire-tab ai-entire-tab--active" data-type="all">전체 20</button>
+                <button class="ai-entire-tab" data-type="call">Call 3</button>
+                <button class="ai-entire-tab" data-type="chat">Chat 8</button>
+            </div>
+
+            <!-- 정보 통계 -->
+            <!--
+                증감 표시 클래스:
+                - ai-entire-info__change--rise: 증가 (icon-rise.png 아이콘 표시)
+                - ai-entire-info__change--decrease: 감소 (icon-decrease.png 아이콘 표시)
+            -->
+            <div class="ai-entire-info">
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">총 세션수</span>
+                    <span class="ai-entire-info__value">
+                        <span>48<span class="unit">건</span></span>
+                        <span class="sub-info">동시세션 37</span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--rise">어제보다 2건 증가 +12 | +10%</span>
+                </div>
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">평균 응답 속도</span>
+                    <span class="ai-entire-info__value">
+                        <span>1.2<span class="unit">초</span></span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--decrease">어제보다 0.1초 빠름</span>
+                </div>
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">인텐트 인식 성공률</span>
+                    <span class="ai-entire-info__value">
+                        <span>88<span class="unit">%</span></span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--rise">어제보다 10% 증가</span>
+                </div>
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">상담 성공</span>
+                    <span class="ai-entire-info__value">
+                        <span>55<span class="unit">건</span></span>
+                         <span class="sub-info">15%</span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--rise">어제보다 18건 증가 | +10%</span>
+                </div>
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">상담사 전환</span>
+                    <span class="ai-entire-info__value">
+                        <span>5<span class="unit">건</span></span>
+                         <span class="sub-info">15%</span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--decrease">어제보다 2건 감소 | -10%</span>
+                </div>
+                <div class="ai-entire-info__item">
+                    <span class="ai-entire-info__label">고객 이탈</span>
+                    <span class="ai-entire-info__value">
+                        <span>15<span class="unit">건</span></span>
+                         <span class="sub-info">15%</span>
+                    </span>
+                    <span class="ai-entire-info__change ai-entire-info__change--decrease">어제보다 2건 감소 | -10%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 세션 영역 -->
+        <div class="ai-entire-content">
+            <div class="ai-entire-filter">
+                <div class="ai-filter-tabs">
+                    <button class="ai-filter-tab ai-filter-tab--active" data-status="all">상담 전체<span class="count">37</span></button>
+                    <button class="ai-filter-tab" data-status="normal">정상<span class="count">37</span></button>
+                    <button class="ai-filter-tab" data-status="warning">주의<span class="count">37</span></button>
+                    <button class="ai-filter-tab" data-status="critical">개입필요<span class="count">37</span></button>
+                </div>
+                <div class="ai-filter-view">
+                    <button class="ai-view-toggle ai-view-toggle--active" data-view="simple">간략하게 보기</button>
+                </div>
+            </div>
+
+            <div class="ai-session-wrapper">
+                <!-- 세션 그리드 -->
+                <div class="ai-session-grid" id="sessionGrid">
+                    <!-- JavaScript로 생성됨 -->
+                </div>
+
+                <!-- 세션 디테일 패널 (숨김/표시) -->
+                <div class="ai-session-detail" id="sessionDetailPanel">
+                    <div class="detail-panel__content">
+                        <div class="detail-panel__header">
+                            <div class="detail-panel__title-section">
+                                <h2 class="detail-panel__title" id="detailSessionId">세션 상세</h2>
+                                <span class="detail-panel__status" id="detailStatus">● 진행중</span>
+                            </div>
+                            <button class="detail-panel__close" id="closeDetailPanel">✕</button>
+                        </div>
+
+                        <div class="detail-panel__body">
+                            <div class="detail-info-section">
+                                <h3 class="detail-section-title">기본 정보</h3>
+                                <div class="detail-info-grid">
+                                    <div class="detail-info-item">
+                                        <span class="detail-info-label">세션 ID</span>
+                                        <span class="detail-info-value" id="detailId">-</span>
+                                    </div>
+                                    <div class="detail-info-item">
+                                        <span class="detail-info-label">시작 시간</span>
+                                        <span class="detail-info-value" id="detailTime">-</span>
+                                    </div>
+                                    <div class="detail-info-item">
+                                        <span class="detail-info-label">유입 경로</span>
+                                        <span class="detail-info-value" id="detailSource">-</span>
+                                    </div>
+                                    <div class="detail-info-item">
+                                        <span class="detail-info-label">소요 시간</span>
+                                        <span class="detail-info-value" id="detailDuration">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-info-section">
+                                <h3 class="detail-section-title">진행 상황</h3>
+                                <div class="detail-progress-list" id="detailProgressList">
+                                    <!-- Progress bars will be inserted here -->
+                                </div>
+                            </div>
+
+                            <div class="detail-info-section">
+                                <h3 class="detail-section-title">대화 내역</h3>
+                                <div class="conversation-timeline" id="conversationTimeline">
+                                    <!-- Conversation messages will be inserted here -->
+                                </div>
+                            </div>
+
+                            <div class="detail-info-section">
+                                <h3 class="detail-section-title">성능 지표</h3>
+                                <div class="performance-grid">
+                                    <div class="performance-card">
+                                        <span class="performance-label">평균 응답 시간</span>
+                                        <span class="performance-value" id="detailResponseTime">-</span>
+                                    </div>
+                                    <div class="performance-card">
+                                        <span class="performance-label">인텐트 인식률</span>
+                                        <span class="performance-value" id="detailIntentRate">-</span>
+                                    </div>
+                                    <div class="performance-card">
+                                        <span class="performance-label">대화 만족도</span>
+                                        <span class="performance-value" id="detailSatisfaction">-</span>
+                                    </div>
+                                    <div class="performance-card">
+                                        <span class="performance-label">감정 점수</span>
+                                        <span class="performance-value" id="detailEmotion">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-actions">
+                                <button class="detail-btn detail-btn--primary">상담사 연결</button>
+                                <button class="detail-btn detail-btn--secondary">대화 종료</button>
+                                <button class="detail-btn detail-btn--outline">내보내기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Trigger app.js re-initialization when this page loads
+if (window.dashboardApp && window.dashboardApp.reinit) {
+    console.log('🔄 Triggering monitoring page initialization...');
+    window.dashboardApp.reinit();
+}
+</script>

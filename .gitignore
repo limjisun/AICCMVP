@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+aiccmvp/node_modules/
+
+# Build outputs
+aiccmvp/dist/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development files
+*.swp
+*.swo
+*~

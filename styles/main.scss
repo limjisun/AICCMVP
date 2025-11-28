@@ -1,0 +1,1419 @@
+// ==========================================
+// Font Face - Pretendard Local
+// ==========================================
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../assets/fonts/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 600;
+    font-display: swap;
+    src: url('../assets/fonts/Roboto-SemiBold.ttf') format('truetype');
+}
+
+// ==========================================
+// Variables & Design Tokens
+// ==========================================
+
+// Colors
+$primary: #00D9C0;
+$primary-dark: #00B8A9;
+$warning: #FF6B35;
+$success: #4A90E2;
+$error: #E74C3C;
+
+$bg-main: #FFFFFF;
+$bg-card: #FFFFFF;
+$bg-sidebar: #14AFBE;
+
+$border-color:#DDE4EB;
+$border-cardcolor:#E4E4E4;
+
+
+// Text Colors - 용도 기반
+$text-dark: #111;              // 강조용 진한 검정 (거의 사용 안함)
+$text-primary: #282828;        // 주요 텍스트 (제목, 중요 내용)
+$text-secondary: #444;         // 보조 텍스트 (설명, 부연)
+$text-tertiary: #777;          // 3차 텍스트 (라벨, 캡션)
+$text-muted: #999;             // 흐린 텍스트 (비활성, 힌트)
+$text-light: #999;             // 별칭 (하위 호환성)
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 3rem;
+
+// Typography
+$font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+$font-family-numeric: 'Roboto', $font-family;
+$font-size-base: 13px;
+$font-size-lg: 19px;
+$font-size-xl: 24px;
+$font-size-xxl: 32px;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+
+// Breakpoints
+$breakpoint-tablet: 1440px;
+
+// Shadows
+$shadow-sm: 0 0 3px 3px rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+// Border Radius
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 100px;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-medium: 0.3s ease;
+
+// ==========================================
+// Reset & Base Styles
+// ==========================================
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: $font-size-base;
+}
+
+body {
+    font-family: $font-family;
+    color: $text-primary;
+    background: $bg-card;
+    line-height: 1.6;
+    overflow-y: hidden;
+    overflow-x: auto;
+    height: 100vh;
+    min-width: 1336px;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: inherit;
+}
+
+// ==========================================
+// Global Scrollbar Styles
+// ==========================================
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #E0E0E0;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #A6AAC2;
+    border-radius: 3px;
+
+    &:hover {
+        background: #8E92A8;
+    }
+}
+
+// ==========================================
+// Header
+// ==========================================
+
+.header {
+    background: $bg-main;
+    display: flex;
+    padding: 0 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 40px;
+    border-bottom: 1px solid $border-color;
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__user {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+    }
+
+    &__profile {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+
+        img {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+    }
+
+    &__username {
+        font-size: 13px;
+        color: $text-primary;
+        font-weight: 500;
+    }
+
+    &__logout {
+       
+    }
+}
+
+// ==========================================
+// Container & Layout
+// ==========================================
+
+.container {
+    display: flex;
+    height: calc(100vh - 40px);
+    overflow: hidden;
+}
+
+// ==========================================
+// Sidebar
+// ==========================================
+
+.sidebar {
+    width: 54px;
+    background: $bg-sidebar;
+    padding: 0;
+    position: relative;
+
+    &__nav {
+        display: flex;
+        flex-direction: column;
+        padding: 96px 0;
+        gap: 16px;
+        position: relative;
+    }
+
+    // 엘리베이터 인디케이터
+    &__indicator {
+        position: absolute;
+        left: 0;
+        width: 54px;
+        height: 56px;
+        background-image: url('../assets/images/indicator.png');
+        transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    &__item {
+        width: 54px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        text-decoration: none;
+        z-index: 2;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+
+        // Monitor icon
+        &[data-icon="monitor"] .sidebar__icon {
+            background-image: url('../assets/images/nav-monitor_off.png');
+        }
+
+        &[data-icon="monitor"].sidebar__item--active .sidebar__icon {
+            background-image: url('../assets/images/nav-monitor_on.png');
+        }
+
+        // List icon
+        &[data-icon="list"] .sidebar__icon {
+            background-image: url('../assets/images/nav-list_off.png');
+        }
+
+        &[data-icon="list"].sidebar__item--active .sidebar__icon {
+            background-image: url('../assets/images/nav-list_on.png');
+        }
+
+        // Keyword icon
+        &[data-icon="keyword"] .sidebar__icon {
+            background-image: url('../assets/images/nav-keyword_off.png');
+        }
+
+        &[data-icon="keyword"].sidebar__item--active .sidebar__icon {
+            background-image: url('../assets/images/nav-keyword_on.png');
+        }
+    }
+
+    &__icon {
+        width: 54px;
+        height: 56px;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        z-index: 2;
+
+        // 인디케이터 안의 활성 아이콘
+        &--active {
+            &[data-icon="monitor"] {
+                background-image: url('../assets/images/nav-monitor_on.png');
+            }
+
+            &[data-icon="list"] {
+                background-image: url('../assets/images/nav-list_on.png');
+            }
+
+            &[data-icon="keyword"] {
+                background-image: url('../assets/images/nav-keyword_on.png');
+            }
+        }
+    }
+}
+
+// ==========================================
+// Main Content
+// ==========================================
+
+.main {
+    flex: 1;
+    padding: $spacing-lg;
+    overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+// ==========================================
+// Page Monitor - New Layout
+// ==========================================
+
+.page-monitor {
+    display: flex;
+    gap: 22px;
+    height:100%;
+    overflow: hidden;
+}
+
+// ==========================================
+// AI Bot Wrap - 왼쪽 패널 (340px)
+// ==========================================
+
+.ai-bot-wrap {
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.page-title {
+    font-size: $font-size-xl;
+    font-weight: 500;
+    color: $text-primary;
+    margin: 0;
+}
+
+.ai-bot-info {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    overflow: visible;
+    min-height: 0;
+
+    &__titlebox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 11px;
+        height: 120px;
+    }
+
+    &__title {
+        font-size: $font-size-lg;
+        font-weight: 500;
+        color: $text-primary;
+    }
+
+    &__state {
+        border:1px solid $border-cardcolor;
+        padding:0 10px;
+        border-radius: $radius-lg;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 25px;
+
+        &::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        // 정상
+        &--normal {
+            color: #4A4A49;
+
+            &::before {
+                background: #35E34F;
+            }
+        }
+
+        // 지연
+        &--warning {
+            color: #4A4A49;
+
+            &::before {
+                background: #E9C706;
+            }
+        }
+
+        // 오류
+        &--error {
+            color: #4A4A49;
+
+            &::before {
+                background: #D65E5F;
+            }
+        }
+
+        // 대기
+        &--pending {
+            color: #4A4A49;
+
+            &::before {
+                background: #FF936B;
+            }
+        }
+
+        // 기본값 (정상)
+        color: #4A4A49;
+
+        &::before {
+            background: #35E34F;
+        }
+    }
+
+    &__box {
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        padding: 20px 18px;
+        gap:38px;
+        border-radius: $radius-md;
+        background: #F7F7FB;
+        overflow-y: auto;
+        min-height: 0;
+    }
+    &__metric {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        
+        &__basic {
+            
+        }
+    }
+    &__boxwrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap:10px;
+    }
+    &__each {
+        display: flex;
+        background: $bg-main;
+        flex-direction: column;
+        border-radius: $radius-md;
+        padding: 17px 12px;
+        flex: 1;
+        overflow: visible;
+    }
+    
+    &__label {
+        font-size: 13px;
+        color: $text-secondary;
+        display: flex;
+        align-items: center;
+    }
+
+    &__value {
+        font-size: 20px;
+        color: $text-dark;
+        font-family: $font-family-numeric;
+
+        .unit {
+            font-size: 15px;
+        }
+    }
+}
+// ==========================================
+// AI Bot Entire - 오른쪽 영역
+// ==========================================
+
+.ai-bot-entire {
+    flex: 1;
+    background: $bg-main;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 20px;
+}
+
+.ai-entire-header {
+}
+
+.ai-entire-tabs {
+    display: inline-block;
+    border: 1px solid #333;
+    margin-bottom: $spacing-md;
+    padding:8px 10px;
+    border:1px solid $border-color;
+    border-radius: $radius-lg;
+}
+
+.ai-entire-tab {
+    padding: 0 16px;
+    height: 24px;
+    background: $bg-card;
+    border: none;
+    border-radius: $radius-lg;
+    font-size: 13px;
+    color: $text-secondary;
+    font-weight: 500;
+    transition: all $transition-fast;
+    cursor: pointer;
+
+    &--active {
+        background: #FF865A;
+        color: white;
+    }
+}
+
+.ai-entire-info {
+    display: flex;
+
+    &__item {
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__label {
+        font-size: 13px;
+        color: $text-tertiary;
+    }
+
+    &__value {
+        font-size: $font-size-xxl;
+        font-weight: 400;
+        color: $text-dark;
+        font-family: $font-family-numeric;
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        line-height: normal;
+
+        .unit {
+            font-size: 20px;
+        }
+
+        .sub-info {
+            font-size: 12px;
+            color: $text-secondary;
+            font-weight: 400;
+            padding: 0 5px;
+            border: 1px solid $border-cardcolor;
+            border-radius: $radius-sm;
+            margin-bottom: 4px;
+        }
+    }
+
+    &__change {
+        font-size: 11px;
+        color: $text-muted;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &::before {
+            content: '';
+            width: 10px;
+            height: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        &--rise::before {
+            background-image: url('../assets/images/icon-rise.png');
+        }
+
+        &--decrease::before {
+            background-image: url('../assets/images/icon-decrease.png');
+        }
+    }
+}
+
+.ai-entire-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 10px;
+}
+
+.ai-entire-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-filter-tabs {
+    display: flex;
+    gap: 24px;
+}
+
+.ai-filter-tab {
+    font-size: 13px;
+    padding: 6px 0;
+    color:$text-tertiary;
+    font-weight: 500;
+    transition: all $transition-fast;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 6px;
+
+    &--active {
+      border-bottom: 1px solid #333;
+      color: $text-dark;
+      font-weight: 500;
+    }
+
+    .count {
+        background: #F5F5F5;
+        padding: 3px 6px;
+        border-radius: $radius-md;
+    }
+}
+
+.ai-filter-view {
+    display: flex;
+    gap: $spacing-xs;
+}
+
+.ai-view-toggle {
+    
+    font-size: 13px;
+    color: $text-tertiary;
+    transition: all $transition-fast;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &::before {
+        content: '';
+        width: 14px;
+        height: 14px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('../assets/images/check_off.png');
+    }
+    &--active {
+        color: $text-primary;
+    }
+
+    &--active::before {
+        background-image: url('../assets/images/check_on.png');
+    }
+}
+
+.ai-session-wrapper {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    gap: 0;
+    overflow: hidden;
+    transition: grid-template-columns $transition-medium, gap $transition-medium;
+
+    &.detail-open {
+        grid-template-columns: 1fr 837px;
+        gap: $spacing-md;
+    }
+}
+
+.ai-session-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    padding-right: $spacing-xs;
+
+    // 디테일 패널 열릴 때 자동으로 조정
+    .ai-session-wrapper.detail-open & {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+.ai-session-detail {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all $transition-medium;
+    max-width: 837px;
+
+    .ai-session-wrapper.detail-open & {
+        width: auto;
+        opacity: 1;
+        overflow: auto;
+    }
+
+    // 화면이 작을 때 최소 너비 줄이기
+    @media (max-width: 1600px) {
+        min-width: 350px;
+    }
+
+    @media (max-width: 1440px) {
+        min-width: 300px;
+    }
+}
+
+// Session Card
+.session-card {
+    background: $bg-main;
+    border-radius:$radius-md;
+    padding:20px 20px 12px 20px;
+    transition: all $transition-medium;
+    border: 1px solid #EAEBEF;
+
+    &.active {
+        border: 1px solid #AAAEC5;
+        background: #FAFAFD;
+    }
+
+    // 개입필요 상태
+    &--critical {
+        border-color: #CA7B7BCC;
+    }
+
+    &__session-brief{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+
+        + .session-card__progress {
+            margin-top: 18px;
+        }
+        +.session-card__btnwrap{
+            margin-top: 18px;
+         }
+    }
+    &__state{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+    }
+    &__btn{
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-image: url('../assets/images/ico-arw.png');
+        cursor: pointer;
+        transition: transform $transition-fast;
+    }
+
+    &__time {
+        font-size: $font-size-lg;
+        font-weight: 500;
+        color: $text-primary;
+        font-family: $font-family-numeric;
+        font-variant-numeric: tabular-nums;
+    }
+
+    &__source {
+        width: 28px;
+        height: 28px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        flex-shrink: 0;
+
+        // Call 타입
+        &--call {
+            background-image: url('../assets/images/icon-call.png');
+        }
+
+        // Chat 타입
+        &--chat {
+            background-image: url('../assets/images/icon-chat.png');
+        }
+    }
+
+    &__status {
+        font-size: 11px;
+        display: inline-block;
+
+        // 정상
+        &--normal {
+            font-size: 12px;
+            color: #444;
+        }
+
+        // 주의
+        &--warning {
+            padding: 0px 8px;
+            font-weight: 600;
+            background: #F2AF1F;
+            color: #fff;
+            border-radius: 2px;
+        }
+
+        // 개입필요
+        &--critical {
+            padding: 0px 8px;
+            font-weight: 600;
+            background: #D65E5F;
+            color: #fff;
+            border-radius: 2px;
+        }
+    }
+
+    &__btnwrap{
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__action {
+        padding: 4px 12px;
+        border: 1px solid #EAEBEF;
+        background: $bg-card;
+        border-radius: $radius-sm;
+        text-align: center;
+        font-size: 12px;
+        color: $text-secondary;
+        transition: all $transition-fast;
+    }
+
+    &__progress{
+    +.session-card__btnwrap{
+        margin-top: 10px;
+    }
+}
+}
+
+
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &__label {
+        font-size: 12px;
+        color: $text-tertiary;
+        min-width: 50px;
+        display: block;
+    }
+
+    &__track {
+        width: 100%;
+        height: 6px;
+        background: #F1F3F6;
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    &__fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+
+        // 0-20
+        &--level-1 {
+            background: #D65E5F;
+        }
+
+        // 21-40
+        &--level-2 {
+            background: #697D86;
+        }
+
+        // 41-60
+        &--level-3 {
+            background: #799BA9;
+        }
+
+        // 61-80
+        &--level-4 {
+            background: #9CB5BF;
+        }
+
+        // 81-100
+        &--level-5 {
+            background: #B4CED9;
+        }
+    }
+}
+
+// ==========================================
+// Tooltip Component (JavaScript 기반)
+// ==========================================
+
+.tooltip {
+    background-image: url('../assets/images/icon-tooltip.png');
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    display: inline-block;
+    cursor: help;
+    transition: all $transition-fast;
+}
+
+// ==========================================
+// Animations
+// ==========================================
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-card__number {
+    animation: countUp 0.6s ease;
+}
+
+// ==========================================
+// Session Detail Panel (3rd Column)
+// ==========================================
+
+.session-detail-panel {
+    background: $bg-main;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    height: 100%;
+    width: 0;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all $transition-medium;
+    overflow-y: auto;
+
+    .detail-section.detail-open & {
+        width: auto;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: $breakpoint-tablet) {
+        display: none;
+
+        .detail-section.detail-open & {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+}
+
+.detail-panel__content {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+
+    @media (max-width: $breakpoint-tablet) {
+        min-width: auto;
+    }
+}
+
+.detail-panel__header {
+    background: $primary;
+    color: white;
+    padding: $spacing-md;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.detail-panel__title-section {
+    flex: 1;
+}
+
+.detail-panel__title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: $spacing-xs;
+}
+
+.detail-panel__status {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.detail-panel__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-fast;
+    flex-shrink: 0;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: rotate(90deg);
+    }
+}
+
+.detail-panel__body {
+    padding: $spacing-md;
+    flex: 1;
+}
+
+// Detail Info Section
+.detail-info-section {
+    margin-bottom: $spacing-lg;
+}
+
+.detail-section-title {
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+    padding-bottom: $spacing-xs;
+    border-bottom: 2px solid #F0F0F0;
+}
+
+.detail-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-sm;
+
+    @media (max-width: $breakpoint-tablet) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.detail-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-info-label {
+    font-size: 12px;
+    color: $text-light;
+    font-weight: 500;
+}
+
+.detail-info-value {
+    font-size: 14px;
+    color: $text-primary;
+    font-weight: 600;
+    font-family: $font-family-numeric;
+    font-variant-numeric: tabular-nums;
+}
+
+// Detail Progress List
+.detail-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.detail-progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.detail-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-progress-name {
+    font-size: 13px;
+    color: $text-primary;
+    font-weight: 600;
+}
+
+.detail-progress-percent {
+    font-size: 13px;
+    color: $primary;
+    font-weight: 700;
+    font-family: $font-family-numeric;
+    font-variant-numeric: tabular-nums;
+}
+
+.detail-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #F0F0F0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.detail-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, $primary, $primary-dark);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+// Conversation Timeline
+.conversation-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: $spacing-xs;
+}
+
+.conversation-message {
+    display: flex;
+    gap: 0.75rem;
+    animation: fadeInUp 0.3s ease;
+
+    &--user {
+        flex-direction: row-reverse;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.conversation-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+
+    .conversation-message--user & {
+        background: $primary;
+        color: white;
+    }
+
+    .conversation-message--bot & {
+        background: $success;
+        color: white;
+    }
+}
+
+.conversation-bubble {
+    max-width: 70%;
+    padding: 0.75rem $spacing-sm;
+    border-radius: $radius-lg;
+    font-size: 13px;
+    line-height: 1.5;
+
+    .conversation-message--user & {
+        background: $primary;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .conversation-message--bot & {
+        background: #F0F0F0;
+        color: $text-primary;
+        border-bottom-left-radius: 4px;
+    }
+}
+
+.conversation-time {
+    font-size: 11px;
+    color: $text-light;
+    margin-top: 0.25rem;
+    text-align: right;
+
+    .conversation-message--bot & {
+        text-align: left;
+    }
+}
+
+// Performance Grid
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-sm;
+
+    @media (max-width: $breakpoint-tablet) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.performance-card {
+    background: $bg-card;
+    padding: $spacing-sm;
+    border-radius: $radius-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: #E8F5F4;
+        transform: translateY(-2px);
+    }
+}
+
+.performance-label {
+    font-size: 12px;
+    color: $text-secondary;
+    font-weight: 500;
+}
+
+.performance-value {
+    font-size: 20px;
+    color: $primary;
+    font-weight: 700;
+    font-family: $font-family-numeric;
+    font-variant-numeric: tabular-nums;
+}
+
+// Detail Actions
+.detail-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: $spacing-lg;
+    padding-top: $spacing-md;
+    border-top: 1px solid #F0F0F0;
+
+    @media (max-width: $breakpoint-tablet) {
+        flex-direction: column;
+    }
+}
+
+.detail-btn {
+    flex: 1;
+    padding: 0.75rem $spacing-sm;
+    border-radius: $radius-md;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all $transition-fast;
+
+    &--primary {
+        background: $primary;
+        color: white;
+
+        &:hover {
+            background: $primary-dark;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($primary, 0.3);
+        }
+    }
+
+    &--secondary {
+        background: $warning;
+        color: white;
+
+        &:hover {
+            background: #E55C28;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($warning, 0.3);
+        }
+    }
+
+    &--outline {
+        background: transparent;
+        border: 1px solid #E0E0E0;
+        color: $text-secondary;
+
+        &:hover {
+            background: $bg-card;
+            border-color: $primary;
+            color: $primary;
+        }
+    }
+}
+
+// ==========================================
+// Content Wrapper & Tab Navigation
+// ==========================================
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tab-nav {
+    background: white;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 0 20px;
+    min-height: 44px;
+}
+
+.tab-nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 4px;
+
+    li {
+        display: flex;
+        align-items: center;
+        position: relative;
+        background: #F5F5F5;
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+        transition: all $transition-fast;
+
+        &.active {
+            background: white;
+
+            .tab-nav-link {
+                color: $primary;
+                font-weight: 600;
+            }
+        }
+
+        &:hover:not(.active) {
+            background: #EBEBEB;
+        }
+    }
+}
+
+.tab-nav-link {
+    padding: 10px 16px;
+    text-decoration: none;
+    color: $text-secondary;
+    font-size: 13px;
+    display: block;
+    transition: all $transition-fast;
+
+    &:hover {
+        color: $text-primary;
+    }
+}
+
+.tab-nav-close {
+    padding: 0 12px 0 4px;
+    background: none;
+    border: none;
+    color: $text-tertiary;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all $transition-fast;
+    line-height: 1;
+
+    &:hover {
+        color: $error;
+    }
+}
+
+
+// Contents Wrap needs main styles
+.contents-wrap {
+    flex: 1;
+    overflow-y: auto;
+    background: $bg-main;
+    padding: 18px 24px;
+    display: flex;
+    flex-direction: column;
+}

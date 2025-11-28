@@ -1,0 +1,1159 @@
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-Medium.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/Pretendard-SemiBold.woff") format("woff");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/Roboto-SemiBold.ttf") format("truetype");
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 13px;
+}
+
+body {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #282828;
+  background: #FFFFFF;
+  line-height: 1.6;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 100vh;
+  min-width: 1336px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E0E0E0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A6AAC2;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8E92A8;
+}
+
+.header {
+  background: #FFFFFF;
+  display: flex;
+  padding: 0 20px;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 40px;
+  border-bottom: 1px solid #DDE4EB;
+}
+.header__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__user {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+.header__profile {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.header__profile img {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+.header__username {
+  font-size: 13px;
+  color: #282828;
+  font-weight: 500;
+}
+.container {
+  display: flex;
+  height: calc(100vh - 40px);
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 54px;
+  background: #14AFBE;
+  padding: 0;
+  position: relative;
+}
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  padding: 96px 0;
+  gap: 16px;
+  position: relative;
+}
+.sidebar__indicator {
+  position: absolute;
+  left: 0;
+  width: 54px;
+  height: 56px;
+  background-image: url("../assets/images/indicator.png");
+  transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+.sidebar__item {
+  width: 54px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-decoration: none;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.sidebar__item[data-icon=monitor] .sidebar__icon {
+  background-image: url("../assets/images/nav-monitor_off.png");
+}
+.sidebar__item[data-icon=monitor].sidebar__item--active .sidebar__icon {
+  background-image: url("../assets/images/nav-monitor_on.png");
+}
+.sidebar__item[data-icon=list] .sidebar__icon {
+  background-image: url("../assets/images/nav-list_off.png");
+}
+.sidebar__item[data-icon=list].sidebar__item--active .sidebar__icon {
+  background-image: url("../assets/images/nav-list_on.png");
+}
+.sidebar__item[data-icon=keyword] .sidebar__icon {
+  background-image: url("../assets/images/nav-keyword_off.png");
+}
+.sidebar__item[data-icon=keyword].sidebar__item--active .sidebar__icon {
+  background-image: url("../assets/images/nav-keyword_on.png");
+}
+.sidebar__icon {
+  width: 54px;
+  height: 56px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 2;
+}
+.sidebar__icon--active[data-icon=monitor] {
+  background-image: url("../assets/images/nav-monitor_on.png");
+}
+.sidebar__icon--active[data-icon=list] {
+  background-image: url("../assets/images/nav-list_on.png");
+}
+.sidebar__icon--active[data-icon=keyword] {
+  background-image: url("../assets/images/nav-keyword_on.png");
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-monitor {
+  display: flex;
+  gap: 22px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ai-bot-wrap {
+  width: 340px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #282828;
+  margin: 0;
+}
+
+.ai-bot-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: visible;
+  min-height: 0;
+}
+.ai-bot-info__titlebox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 11px;
+  height: 120px;
+}
+.ai-bot-info__title {
+  font-size: 19px;
+  font-weight: 500;
+  color: #282828;
+}
+.ai-bot-info__state {
+  border: 1px solid #E4E4E4;
+  padding: 0 10px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 25px;
+}
+.ai-bot-info__state::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ai-bot-info__state--normal {
+  color: #4A4A49;
+}
+.ai-bot-info__state--normal::before {
+  background: #35E34F;
+}
+.ai-bot-info__state--warning {
+  color: #4A4A49;
+}
+.ai-bot-info__state--warning::before {
+  background: #E9C706;
+}
+.ai-bot-info__state--error {
+  color: #4A4A49;
+}
+.ai-bot-info__state--error::before {
+  background: #D65E5F;
+}
+.ai-bot-info__state--pending {
+  color: #4A4A49;
+}
+.ai-bot-info__state--pending::before {
+  background: #FF936B;
+}
+.ai-bot-info__state {
+  color: #4A4A49;
+}
+.ai-bot-info__state::before {
+  background: #35E34F;
+}
+.ai-bot-info__box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 18px;
+  gap: 38px;
+  border-radius: 6px;
+  background: #F7F7FB;
+  overflow-y: auto;
+  min-height: 0;
+}
+.ai-bot-info__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ai-bot-info__boxwrap {
+  display: grid;
+   grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.ai-bot-info__boxwrap--col2-custom {
+  grid-template-columns: 40% 60%;
+}
+.ai-bot-info__boxwrap--col3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.ai-bot-info__each {
+  display: flex;
+  background: #FFFFFF;
+  flex-direction: column;
+  border-radius: 6px;
+  padding: 17px 12px;
+  flex: 1;
+  overflow: visible;
+}
+.ai-bot-info__label {
+  font-size: 13px;
+  color: #444;
+  display: flex;
+  align-items: center;
+}
+.ai-bot-info__value {
+  font-size: 20px;
+  color: #111;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+.ai-bot-info__value .unit {
+  font-size: 15px;
+}
+
+.ai-bot-entire {
+  flex: 1;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 20px;
+}
+
+.ai-entire-tabs {
+  display: inline-block;
+  border: 1px solid #333;
+  margin-bottom: 1.5rem;
+  padding: 8px 10px;
+  border: 1px solid #DDE4EB;
+  border-radius: 100px;
+}
+
+.ai-entire-tab {
+  padding: 0 16px;
+  height: 24px;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 100px;
+  font-size: 13px;
+  color: #444;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.ai-entire-tab--active {
+  background: #FF865A;
+  color: white;
+}
+
+.ai-entire-info {
+  display: flex;
+}
+.ai-entire-info__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ai-entire-info__label {
+  font-size: 13px;
+  color: #777;
+}
+.ai-entire-info__value {
+  font-size: 32px;
+  font-weight: 400;
+  color: #111;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  line-height: normal;
+}
+.ai-entire-info__value .unit {
+  font-size: 20px;
+}
+.ai-entire-info__value .sub-info {
+  font-size: 12px;
+  color: #444;
+  font-weight: 400;
+  padding: 0 5px;
+  border: 1px solid #E4E4E4;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.ai-entire-info__change {
+  font-size: 11px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ai-entire-info__change::before {
+  content: "";
+  width: 10px;
+  height: 8px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.ai-entire-info__change--rise::before {
+  background-image: url("../assets/images/icon-rise.png");
+}
+.ai-entire-info__change--decrease::before {
+  background-image: url("../assets/images/icon-decrease.png");
+}
+
+.ai-entire-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.ai-entire-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-filter-tabs {
+  display: flex;
+  gap: 24px;
+}
+
+.ai-filter-tab {
+  font-size: 13px;
+  padding: 6px 0;
+  color: #777;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px;
+}
+.ai-filter-tab--active {
+  border-bottom: 1px solid #333;
+  color: #111;
+  font-weight: 500;
+}
+.ai-filter-tab .count {
+  background: #F5F5F5;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.ai-filter-view {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ai-view-toggle {
+  font-size: 13px;
+  color: #777;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ai-view-toggle::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("../assets/images/check_off.png");
+}
+.ai-view-toggle--active {
+  color: #282828;
+}
+.ai-view-toggle--active::before {
+  background-image: url("../assets/images/check_on.png");
+}
+
+.ai-session-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 0fr;
+  gap: 0;
+  overflow: hidden;
+  transition: grid-template-columns 0.3s ease, gap 0.3s ease;
+}
+.ai-session-wrapper.detail-open {
+  grid-template-columns: 1fr 837px;
+  gap: 1.5rem;
+}
+
+.ai-session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  padding-right: 0.5rem;
+}
+.ai-session-wrapper.detail-open .ai-session-grid {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.ai-session-detail {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-width: 837px;
+}
+.ai-session-wrapper.detail-open .ai-session-detail {
+  width: auto;
+  opacity: 1;
+  overflow: auto;
+}
+@media (max-width: 1600px) {
+  .ai-session-detail {
+    min-width: 350px;
+  }
+}
+@media (max-width: 1440px) {
+  .ai-session-detail {
+    min-width: 300px;
+  }
+}
+
+.session-card {
+  background: #FFFFFF;
+  border-radius: 6px;
+  padding: 20px 20px 12px 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #EAEBEF;
+}
+.session-card.active {
+  border: 1px solid #AAAEC5;
+  background: #FAFAFD;
+}
+.session-card--critical {
+  border-color: rgba(202, 123, 123, 0.8);
+}
+.session-card__session-brief {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.session-card__session-brief + .session-card__progress {
+  margin-top: 18px;
+}
+.session-card__session-brief + .session-card__btnwrap {
+  margin-top: 18px;
+}
+.session-card__state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.session-card__btn {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-image: url("../assets/images/ico-arw.png");
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.session-card__time {
+  font-size: 19px;
+  font-weight: 500;
+  color: #282828;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.session-card__source {
+  width: 28px;
+  height: 28px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+.session-card__source--call {
+  background-image: url("../assets/images/icon-call.png");
+}
+.session-card__source--chat {
+  background-image: url("../assets/images/icon-chat.png");
+}
+.session-card__status {
+  font-size: 11px;
+  display: inline-block;
+}
+.session-card__status--normal {
+  font-size: 12px;
+  color: #444;
+}
+.session-card__status--warning {
+  padding: 0px 8px;
+  font-weight: 600;
+  background: #F2AF1F;
+  color: #fff;
+  border-radius: 2px;
+}
+.session-card__status--critical {
+  padding: 0px 8px;
+  font-weight: 600;
+  background: #D65E5F;
+  color: #fff;
+  border-radius: 2px;
+}
+.session-card__btnwrap {
+  display: flex;
+  justify-content: flex-end;
+}
+.session-card__action {
+  padding: 4px 12px;
+  border: 1px solid #EAEBEF;
+  background: #FFFFFF;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 12px;
+  color: #444;
+  transition: all 0.2s ease;
+}
+.session-card__progress + .session-card__btnwrap {
+  margin-top: 10px;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+}
+.progress-bar:last-child {
+  margin-bottom: 0;
+}
+.progress-bar__label {
+  font-size: 12px;
+  color: #777;
+  min-width: 50px;
+  display: block;
+}
+.progress-bar__track {
+  width: 100%;
+  height: 6px;
+  background: #F1F3F6;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-bar__fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.progress-bar__fill--level-1 {
+  background: #D65E5F;
+}
+.progress-bar__fill--level-2 {
+  background: #697D86;
+}
+.progress-bar__fill--level-3 {
+  background: #799BA9;
+}
+.progress-bar__fill--level-4 {
+  background: #9CB5BF;
+}
+.progress-bar__fill--level-5 {
+  background: #B4CED9;
+}
+
+.tooltip {
+  background-image: url("../assets/images/icon-tooltip.png");
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  display: inline-block;
+  cursor: help;
+  transition: all 0.2s ease;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.stat-card__number {
+  animation: countUp 0.6s ease;
+}
+
+.session-detail-panel {
+  background: #FFFFFF;
+  border-radius: 100px;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  height: 100%;
+  width: 0;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+.detail-section.detail-open .session-detail-panel {
+  width: auto;
+  opacity: 1;
+  transform: translateX(0);
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (max-width: 1440px) {
+  .session-detail-panel {
+    display: none;
+  }
+  .detail-section.detail-open .session-detail-panel {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.detail-panel__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+@media (max-width: 1440px) {
+  .detail-panel__content {
+    min-width: auto;
+  }
+}
+
+.detail-panel__header {
+  background: #00D9C0;
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.detail-panel__title-section {
+  flex: 1;
+}
+
+.detail-panel__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.detail-panel__status {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.detail-panel__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.detail-panel__close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.detail-panel__body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.detail-info-section {
+  margin-bottom: 2rem;
+}
+
+.detail-section-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: #282828;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #F0F0F0;
+}
+
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 1440px) {
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-info-label {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+}
+
+.detail-info-value {
+  font-size: 14px;
+  color: #282828;
+  font-weight: 600;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-progress-name {
+  font-size: 13px;
+  color: #282828;
+  font-weight: 600;
+}
+
+.detail-progress-percent {
+  font-size: 13px;
+  color: #00D9C0;
+  font-weight: 700;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #F0F0F0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.detail-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00D9C0, #00B8A9);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.conversation-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.conversation-message {
+  display: flex;
+  gap: 0.75rem;
+  animation: fadeInUp 0.3s ease;
+}
+.conversation-message--user {
+  flex-direction: row-reverse;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.conversation-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E0E0E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.conversation-message--user .conversation-avatar {
+  background: #00D9C0;
+  color: white;
+}
+.conversation-message--bot .conversation-avatar {
+  background: #4A90E2;
+  color: white;
+}
+
+.conversation-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 100px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.conversation-message--user .conversation-bubble {
+  background: #00D9C0;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.conversation-message--bot .conversation-bubble {
+  background: #F0F0F0;
+  color: #282828;
+  border-bottom-left-radius: 4px;
+}
+
+.conversation-time {
+  font-size: 11px;
+  color: #999;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+.conversation-message--bot .conversation-time {
+  text-align: left;
+}
+
+.performance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 1440px) {
+  .performance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.performance-card {
+  background: #FFFFFF;
+  padding: 1rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+.performance-card:hover {
+  background: #E8F5F4;
+  transform: translateY(-2px);
+}
+
+.performance-label {
+  font-size: 12px;
+  color: #444;
+  font-weight: 500;
+}
+
+.performance-value {
+  font-size: 20px;
+  color: #00D9C0;
+  font-weight: 700;
+  font-family: "Roboto", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #F0F0F0;
+}
+@media (max-width: 1440px) {
+  .detail-actions {
+    flex-direction: column;
+  }
+}
+
+.detail-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.detail-btn--primary {
+  background: #00D9C0;
+  color: white;
+}
+.detail-btn--primary:hover {
+  background: #00B8A9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 217, 192, 0.3);
+}
+.detail-btn--secondary {
+  background: #FF6B35;
+  color: white;
+}
+.detail-btn--secondary:hover {
+  background: #E55C28;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+.detail-btn--outline {
+  background: transparent;
+  border: 1px solid #E0E0E0;
+  color: #444;
+}
+.detail-btn--outline:hover {
+  background: #FFFFFF;
+  border-color: #00D9C0;
+  color: #00D9C0;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-nav {
+  background: white;
+  border-bottom: 1px solid #E0E0E0;
+  padding: 0 20px;
+  min-height: 44px;
+}
+
+.tab-nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+}
+.tab-nav-list li {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: #F5F5F5;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.tab-nav-list li.active {
+  background: white;
+}
+.tab-nav-list li.active .tab-nav-link {
+  color: #00D9C0;
+  font-weight: 600;
+}
+.tab-nav-list li:hover:not(.active) {
+  background: #EBEBEB;
+}
+
+.tab-nav-link {
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #444;
+  font-size: 13px;
+  display: block;
+  transition: all 0.2s ease;
+}
+.tab-nav-link:hover {
+  color: #282828;
+}
+
+.tab-nav-close {
+  padding: 0 12px 0 4px;
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+.tab-nav-close:hover {
+  color: #E74C3C;
+}
+
+.contents-wrap {
+  flex: 1;
+  overflow-y: auto;
+  background: #FFFFFF;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=main.css.map */
