@@ -1,5 +1,9 @@
 import React from 'react';
-import { startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { Calendar } from './Calendar';
+import { Popover, PopoverContent, PopoverTrigger } from './Popover';
+import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import './DateRangePicker.css';
 
@@ -31,52 +35,52 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setSelectedMonth(monthsAgo);
   };
 
-  const formatDateForInput = (date?: Date) => {
-    if (!date) return '';
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value) {
-      onStartDateChange(new Date(value));
-      setSelectedMonth(null);
-    } else {
-      onStartDateChange(undefined);
-    }
-  };
-
-  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value) {
-      onEndDateChange(new Date(value));
-      setSelectedMonth(null);
-    } else {
-      onEndDateChange(undefined);
-    }
-  };
-
   return (
     <div className="date-range-container">
       <div className="date-range">
-        <input
-          type="date"
-          className="date-input"
-          value={formatDateForInput(startDate)}
-          onChange={handleStartDateChange}
-          placeholder={startPlaceholder}
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              className={cn(
+                'date-button',
+                !startDate && 'date-button-placeholder'
+              )}
+            >
+              <CalendarIcon className="icon" />
+              {startDate ? format(startDate, 'yyyy-MM-dd') : startPlaceholder}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="calendar-popover">
+            <Calendar
+              mode="single"
+              selected={startDate}
+              onSelect={onStartDateChange}
+              locale={ko}
+            />
+          </PopoverContent>
+        </Popover>
         <span className="date-separator">~</span>
-        <input
-          type="date"
-          className="date-input"
-          value={formatDateForInput(endDate)}
-          onChange={handleEndDateChange}
-          placeholder={endPlaceholder}
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              className={cn(
+                'date-button',
+                !endDate && 'date-button-placeholder'
+              )}
+            >
+              <CalendarIcon className="icon" />
+              {endDate ? format(endDate, 'yyyy-MM-dd') : endPlaceholder}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="calendar-popover">
+            <Calendar
+              mode="single"
+              selected={endDate}
+              onSelect={onEndDateChange}
+              locale={ko}
+            />
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="month-buttons">
         <button

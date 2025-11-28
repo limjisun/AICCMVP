@@ -8,7 +8,7 @@ import './styles/main.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/AICCMVP">
       <Routes>
         {/* 로그인 페이지 (MainLayout 밖) */}
         <Route path="/login" element={<Login />} />
