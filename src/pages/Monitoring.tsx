@@ -9,7 +9,7 @@ import type { Session, TabType, FilterStatus } from '../types';
 
 const Monitoring: React.FC = () => {
   // Zustand store에서 세션 데이터 가져오기
-  const { sessions, isLoading, fetchSessions } = useSessionStore();
+  const { sessions, fetchSessions } = useSessionStore();
 
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');

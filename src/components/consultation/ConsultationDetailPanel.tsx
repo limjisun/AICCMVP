@@ -99,18 +99,6 @@ const ConsultationDetailPanel: React.FC = () => {
 
   if (!selectedHistory) return null;
 
-  const getStatusBadgeClass = (color: string) => {
-    const colorMap: Record<string, string> = {
-      purple: 'badge-purple',
-      blue: 'badge-blue',
-      gray: 'badge-gray',
-      orange: 'badge-orange',
-      yellow: 'badge-yellow',
-      green: 'badge-green',
-    };
-    return colorMap[color] || 'badge-gray';
-  };
-
   return (
     <div className="ai-session-detail detail-open">
        <div className='session-detail-panel'>
