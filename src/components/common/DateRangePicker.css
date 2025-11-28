@@ -36,8 +36,11 @@
   gap: 5px;
 }
 
-.date-input {
+.date-button {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   height: 28px;
   min-width: 120px;
   padding: 0 8px;
@@ -47,20 +50,21 @@
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
-  color: #333;
 }
 
-.date-input:hover {
+.date-button:hover {
   border-color: #555;
 }
 
-.date-input:focus {
-  outline: none;
-  border-color: #4F5BFF;
+.date-button .icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
-.date-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
+.date-button-placeholder {
+  color: #9ca3af;
 }
 
 .date-separator {
