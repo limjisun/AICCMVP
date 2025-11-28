@@ -1,8 +1,101 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useConsultationHistoryStore } from '@/stores/consultationHistoryStore';
 import EmotionChart from '../common/EmotionChart';
+import AudioWaveform from '../common/AudioWaveform';
+import type { EmotionPoint } from '@/types';
+
 const ConsultationDetailPanel: React.FC = () => {
   const { selectedHistory, setIsDetailPanelOpen } = useConsultationHistoryStore();
+  const conversationRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [selectedKeyword, setSelectedKeyword] = useState<string | null>(null);
+
+  // 모든 키워드 목록
+  const allKeywords = useMemo(() => {
+    const keywords: string[] = [];
+    if (selectedHistory?.keywords?.forbidden) {
+      keywords.push(...selectedHistory.keywords.forbidden);
+    }
+    if (selectedHistory?.keywords?.negative) {
+      keywords.push(...selectedHistory.keywords.negative);
+    }
+    return keywords;
+  }, [selectedHistory]);
+
+  // 대화 내역에서 감정 데이터 추출 (사용자 발화만)
+  const emotionData = useMemo<EmotionPoint[]>(() => {
+    if (!selectedHistory || !selectedHistory.conversation) return [];
+
+    return selectedHistory.conversation
+      .filter(msg => msg.type === 'user' && msg.emotion)
+      .map((msg, index) => {
+        const emotionValues: Record<string, number> = {
+          'very_positive': 4,
+          'positive': 3,
+          'neutral': 2,
+          'negative': 1,
+          'very_negative': 0,
+        };
+
+        return {
+          index: index + 1,
+          emotion: msg.emotion!,
+          value: emotionValues[msg.emotion!] || 2,
+          message: msg.text,
+          time: msg.time,
+        };
+      });
+  }, [selectedHistory]);
+
+  // WaveSurfer에서 현재 재생 시간 받기
+  const handleTimeUpdate = (time: number) => {
+    setCurrentTime(time);
+  };
+
+  // 현재 재생 중인 대화 찾기
+  const activeConversationIndex = selectedHistory?.conversation?.findIndex(
+    conv => currentTime >= conv.startTime && currentTime < conv.endTime
+  ) ?? -1;
+
+  // 활성화된 대화로 자동 스크롤
+  useEffect(() => {
+    if (activeConversationIndex !== -1 && conversationRefs.current[activeConversationIndex]) {
+      conversationRefs.current[activeConversationIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [activeConversationIndex]);
+
+  // 키워드 클릭 시 해당 대화로 스크롤
+  const handleKeywordClick = (keyword: string) => {
+    setSelectedKeyword(keyword);
+
+    // 키워드가 포함된 대화 찾기
+    const conversationIndex = selectedHistory?.conversation?.findIndex(
+      conv => conv.text.includes(keyword)
+    ) ?? -1;
+
+    if (conversationIndex !== -1 && conversationRefs.current[conversationIndex]) {
+      conversationRefs.current[conversationIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  };
+
+  // 텍스트에서 키워드를 찾아 <span class="detect">로 감싸기
+  const highlightKeywords = (text: string) => {
+    if (allKeywords.length === 0) return text;
+
+    let highlightedText = text;
+    allKeywords.forEach(keyword => {
+      const regex = new RegExp(`(${keyword})`, 'gi');
+      highlightedText = highlightedText.replace(regex, '<span class="detect">$1</span>');
+    });
+
+    return highlightedText;
+  };
 
   if (!selectedHistory) return null;
 
@@ -26,144 +119,150 @@ const ConsultationDetailPanel: React.FC = () => {
                 <div className="detail-panel__title-section">
                   <div className="detail-panel__title-consult">
                    <div
-                      className={`detail-source-icon detail-source-icon--call`}
+                      className={`detail-source-icon detail-source-icon--${selectedHistory.channel === '콜' ? 'call' : 'chat'}`}
                     /> 
                     <div className="detail-panel__title-consult-left">
-                      <div className="detail-panel__title-consult-title">자동이체 변경</div>
-                      <div className="detail-panel__title-consult-dec">상담일시 : 2025.11.03 14:07:31  상담결과 : 상담완료</div>
+                      <div className="detail-panel__title-consult-title">{selectedHistory.consultationType}</div>
+                      <div className="detail-panel__title-consult-dec">상담일시 : {selectedHistory.createdAt}  상담결과 : {selectedHistory.status}</div>
                     </div>
                   </div>
                  </div>
-                <button className="detail-panel__close">×</button>
+                <button className="detail-panel__close" onClick={() => setIsDetailPanelOpen(false)}>×</button>
               </div>
               <div className="detail-panel__body">
                   <div className='detail-panel-left'>
                      <div className='detail-panel-stt'>
                       <h3 className="detail-section-title">상담내용</h3>
                       <div className="detail-conversation-area">
-                          <div className="conversation-item conversation-item--user">
-                            <div className="conversation-bubble">
-                              <div className="conversation-text">안녕하세요. 자동이체 변경하고 싶습니다.</div>
-                            </div>
-                            <div className="conversation-meta">
-                              <span className="conversation-time">00:10:05</span>
+                          {selectedHistory.conversation?.map((conv, index) => (
+                            <div
+                              key={index}
+                              ref={(el) => { conversationRefs.current[index] = el; }}
+                              className={`conversation-item conversation-item--${conv.type} ${activeConversationIndex === index ? 'Play' : ''}`}
+                            >
+                              <div className="conversation-bubble">
+                                <div
+                                  className="conversation-text"
+                                  dangerouslySetInnerHTML={{ __html: highlightKeywords(conv.text) }}
+                                />
+                              </div>
+                              <div className="conversation-meta">
+                                <span className="conversation-time">{conv.time}</span>
+                                {conv.responseTime && (
+                                  <span className="conversation-response-time">{conv.responseTime}</span>
+                                )}
                               </div>
                             </div>
-
-                           <div className="conversation-item conversation-item--bot Play">
-                            <div className="conversation-bubble">
-                              <div className="conversation-text">안녕하세요. 자동이체 변경을 도와드리겠습니다. 먼저 본인 확인을 위해 고객님의 성함과 생년월일을 말씀해 주시겠습니까?</div>
-                            </div>
-                           <div className="conversation-meta">
-                            <span className="conversation-time">00:10:08</span>
-                            <span className="conversation-response-time">1.2s</span>
-                            </div>
-                          </div>
-
-                          <div className="conversation-item conversation-item--user">
-                            <div className="conversation-bubble">
-                              <div className="conversation-text">안녕하세요. 자동이체 변경하고 싶습니다.</div>
-                            </div>
-                            <div className="conversation-meta">
-                              <span className="conversation-time">00:10:05</span>
-                              </div>
-                          </div>
+                          ))}
                       </div>
                      </div>
-                    <div className='detail-panel-record'>
-                      <h3 className="detail-section-title">상담정보</h3>
-                      <div>오디오</div>
-                     </div>
+                    {selectedHistory.channel === '콜' && selectedHistory.audioUrl && (
+                      <div className='detail-panel-record'>
+                        <h3 className="detail-section-title">상담정보</h3>
+                        <AudioWaveform
+                          audioUrl={selectedHistory.audioUrl}
+                          onTimeUpdate={handleTimeUpdate}
+                          className="consultation-audio-player"
+                        />
+                      </div>
+                    )}
                   </div>
                   <div className='detail-panael-right'>
                        <div className="detail-info-section border-section">
                         <h3 className="detail-section-title">기본 정보</h3>
                         <div className="detail-info-item">
                           <span className="detail-info-label">고객명</span>
-                          <span className="detail-info-value">홍길동</span>
+                          <span className="detail-info-value">{selectedHistory.customerName}</span>
                         </div>
-                        <div className="detail-info-item">
-                          <span className="detail-info-label">고객 ID</span>
-                          <span className="detail-info-value">FDW5000024</span>
-                        </div>
+                        {selectedHistory.customerId && (
+                          <div className="detail-info-item">
+                            <span className="detail-info-label">고객 ID</span>
+                            <span className="detail-info-value">{selectedHistory.customerId}</span>
+                          </div>
+                        )}
                         <div className="detail-info-item">
                           <span className="detail-info-label">연락처</span>
-                          <span className="detail-info-value">010-1234-5678</span>
+                          <span className="detail-info-value">{selectedHistory.contactPhone}</span>
                         </div>
                         <div className="detail-info-item">
                           <span className="detail-info-label">이메일</span>
-                          <span className="detail-info-value">sdfk3223@naver.com</span>
+                          <span className="detail-info-value">{selectedHistory.email}</span>
                         </div>
                       </div>
-                      <div className="detail-info-section border-section">
-                        <h3 className="detail-section-title">실시간 요약</h3>
-                        <div className="summary-item">
-                          <div className="summary-item__wrap">
-                              <span  className="summary-item__label">자동이체 변경</span>
-                              <span  className="summary-item__label">자동이체 변경</span>
+                      {selectedHistory.summary && (
+                        <div className="detail-info-section border-section">
+                          <h3 className="detail-section-title">실시간 요약</h3>
+                          <div className="summary-item">
+                            <div className="summary-item__wrap">
+                              {selectedHistory.summary.tags.map((tag, index) => (
+                                <span key={index} className="summary-item__label">{tag}</span>
+                              ))}
+                            </div>
+                            <div className="summary-item__desc">{selectedHistory.summary.description}</div>
                           </div>
-                          <div className="summary-item__desc">고객은 보험료 자동이체 계좌 변경방법에 대해 문의하였고, 변경방법을 안내하였음. 추가로 납부금액 변경에 대해 요청하여 본인 인증 후 자동이체 계좌를 변경하고 납부금액을 변경 처리하였음. 추가 문의사항은 더이상 없어 상담을 종료함.</div>
                         </div>
-                    </div>
+                      )}
                      <div className="detail-info-section">
                       <h3 className="detail-section-title">감정흐름</h3>
-                        <EmotionChart />
+                        {emotionData.length > 0 && (
+                          <EmotionChart data={emotionData} />
+                        )}
                      </div>
-                    <div className="detail-info-section">
-                      <h3 className="detail-section-title">상담분석</h3>
-                      <div className="metrics-grid">
-                      
-                          <div className="metric-card">
-                            <div className="metric-card__header">평균 응답 속도</div>
-                            <div className="metric-card__value">
-                              <span className="metric-card__number">1.2</span>
-                              <span className="metric-card__unit">초</span>
+                    {selectedHistory.metrics && selectedHistory.metrics.length > 0 && (
+                      <div className="detail-info-section">
+                        <h3 className="detail-section-title">상담분석</h3>
+                        <div className="metrics-grid">
+                          {selectedHistory.metrics.map((metric, index) => (
+                            <div key={index} className="metric-card">
+                              <div className="metric-card__header">{metric.label}</div>
+                              <div className="metric-card__value">
+                                <span className="metric-card__number">{metric.value}</span>
+                                <span className="metric-card__unit">{metric.unit}</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="metric-card">
-                            <div className="metric-card__header">인텐트 인식 성공률</div>
-                            <div className="metric-card__value">
-                              <span className="metric-card__number">80</span>
-                              <span className="metric-card__unit">%</span>
-                            </div>
-                          </div>
-                          <div className="metric-card">
-                            <div className="metric-card__header">대화턴</div>
-                            <div className="metric-card__value">
-                              <span className="metric-card__number">32</span>
-                              <span className="metric-card__unit">회</span>
-                            </div>
-                          </div>
-                          <div className="metric-card">
-                            <div className="metric-card__header">Fallback</div>
-                            <div className="metric-card__value">
-                              <span className="metric-card__number">2</span>
-                              <span className="metric-card__unit">회</span>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                     <div className="detail-info-section">
-                      <h3 className="detail-section-title">키워드 감지</h3>
-                        <div className="detail-keywords-wrap">
-
-                          <div className="detail-keywords-con">
-                            <div className="detail-keywords-label">금지어</div>
-                            <div className="detail-keywords-list">
-                              <button className="detail-keywords-btn active">젠장</button>
-                              <button className="detail-keywords-btn">개판</button>
-                            </div>
-                          </div>
-                          <div className="detail-keywords-con">
-                            <div className="detail-keywords-label">부정어</div>
-                            <div className="detail-keywords-list">
-                              <button className="detail-keywords-btn">오류메세지</button>
-                              <button className="detail-keywords-btn">에러</button>
-                            </div>
-                          </div>
-
+                          ))}
                         </div>
-                     </div>
+                      </div>
+                    )}
+                     {selectedHistory.keywords && (
+                       <div className="detail-info-section">
+                        <h3 className="detail-section-title">키워드 감지</h3>
+                          <div className="detail-keywords-wrap">
+                            {selectedHistory.keywords.forbidden && selectedHistory.keywords.forbidden.length > 0 && (
+                              <div className="detail-keywords-con">
+                                <div className="detail-keywords-label">금지어</div>
+                                <div className="detail-keywords-list">
+                                  {selectedHistory.keywords.forbidden.map((keyword, index) => (
+                                    <button
+                                      key={index}
+                                      className={`detail-keywords-btn ${selectedKeyword === keyword ? 'active' : ''}`}
+                                      onClick={() => handleKeywordClick(keyword)}
+                                    >
+                                      {keyword}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {selectedHistory.keywords.negative && selectedHistory.keywords.negative.length > 0 && (
+                              <div className="detail-keywords-con">
+                                <div className="detail-keywords-label">부정어</div>
+                                <div className="detail-keywords-list">
+                                  {selectedHistory.keywords.negative.map((keyword, index) => (
+                                    <button
+                                      key={index}
+                                      className={`detail-keywords-btn ${selectedKeyword === keyword ? 'active' : ''}`}
+                                      onClick={() => handleKeywordClick(keyword)}
+                                    >
+                                      {keyword}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                       </div>
+                     )}
                   </div>
               </div>
           </div>

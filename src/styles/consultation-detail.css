@@ -312,3 +312,30 @@
   padding: 16px;
   border-radius: 8px;
 }
+
+/* 재생 중인 대화 강조 */
+.conversation-item.Play {
+
+}
+
+/* 키워드 감지 하이라이트 */
+.conversation-text .detect {
+  background: rgba(255, 213, 213, 0.60);
+  color: #BA1818;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% {
+    background: linear-gradient(90deg, rgba(79, 91, 255, 0.08) 0%, rgba(79, 91, 255, 0.02) 100%);
+  }
+  50% {
+    background: linear-gradient(90deg, rgba(79, 91, 255, 0.12) 0%, rgba(79, 91, 255, 0.04) 100%);
+  }
+}
+
+
+.consultation-audio-player {
+  margin-top: 12px;
+}

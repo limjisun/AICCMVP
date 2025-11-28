@@ -99,11 +99,11 @@
 }
 
 .login-button:hover {
-  background: #1a1a1a;
+  background: #14AFBE;
 }
 
 .login-button:active {
-  background: #000000;
+  background: #14AFBE;
 }
 .login-error{
   color: #D65E5F;

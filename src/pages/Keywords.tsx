@@ -29,7 +29,7 @@ const Keywords: React.FC = () => {
         </button>
       </div>
 
-      {/* 테이블 */}
+      {/* 엑셀업로드 그리드 */}
       <KeywordsTable tabType={activeTab} />
     </div>
   );

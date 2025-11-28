@@ -16,6 +16,7 @@
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-table": "^8.21.3",
+    "@wavesurfer/react": "^1.0.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -27,6 +28,7 @@
     "react-router-dom": "^7.9.6",
     "recharts": "^3.5.0",
     "tailwind-merge": "^3.4.0",
+    "wavesurfer.js": "^7.11.1",
     "xlsx": "^0.18.5",
     "zustand": "^5.0.8"
   },

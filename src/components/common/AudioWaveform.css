@@ -1,0 +1,61 @@
+/* 오디오 파형 플레이어 */
+.audio-waveform {
+  width: 100%;
+  background: #ffffff;
+}
+
+.waveform-container {
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 10px 24px;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #EAEBEF;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #A0A3B0;
+  border-radius: 0 0 6px 6px;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.play-button {
+  width: 13px;
+  height: 40px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+
+.play-button.playing {
+ 
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.current-time {
+  color: #fff;
+}
+
+.time-separator {
+  color: #fff;
+  margin: 0 4px;
+}
+
+.duration {
+  color: #fff;
+}

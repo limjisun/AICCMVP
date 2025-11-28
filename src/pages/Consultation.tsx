@@ -22,17 +22,72 @@ const Consultation: React.FC = () => {
     isDetailPanelOpen
   } = useConsultationHistoryStore();
 
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
 
+  // 로컬 state를 store의 날짜 문자열로 변환
+  const startDate = filters.startDate ? new Date(filters.startDate) : undefined;
+  const endDate = filters.endDate ? new Date(filters.endDate) : undefined;
+
+  const handleStartDateChange = (date: Date | undefined) => {
+    setFilters({ startDate: date ? date.toISOString().split('T')[0] : '' });
+  };
+
+  const handleEndDateChange = (date: Date | undefined) => {
+    setFilters({ endDate: date ? date.toISOString().split('T')[0] : '' });
+  };
+
+  // 필터링 처리
+  const filteredHistories = useMemo(() => {
+    return histories.filter(history => {
+      // 상담상태 필터
+      if (filters.status && history.status !== filters.status) {
+        return false;
+      }
+
+      // 상담채널 필터
+      if (filters.channel && history.channel !== filters.channel) {
+        return false;
+      }
+
+      // 기간 필터
+      if (filters.startDate && filters.endDate) {
+        const historyDate = new Date(history.createdAt.replace(/\./g, '-'));
+        const start = new Date(filters.startDate);
+        const end = new Date(filters.endDate);
+        end.setHours(23, 59, 59, 999); // 종료일의 끝까지 포함
+
+        if (historyDate < start || historyDate > end) {
+          return false;
+        }
+      }
+
+      // 검색어 필터 (고객명, 이메일, 전화번호, 상담ID)
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase();
+        const matchFields = [
+          history.customerName,
+          history.email,
+          history.contactPhone,
+          history.consultationId,
+          history.consultationType,
+        ].some(field => field?.toLowerCase().includes(searchLower));
+
+        if (!matchFields) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [histories, filters]);
+
   // 정렬 처리
   const sortedHistories = useMemo(() => {
-    if (sortColumns.length === 0) return histories;
+    if (sortColumns.length === 0) return filteredHistories;
 
-    return [...histories].sort((a, b) => {
+    return [...filteredHistories].sort((a, b) => {
       for (const sort of sortColumns) {
         const aValue = a[sort.columnKey as keyof ConsultationHistory];
         const bValue = b[sort.columnKey as keyof ConsultationHistory];
@@ -44,7 +99,7 @@ const Consultation: React.FC = () => {
       }
       return 0;
     });
-  }, [histories, sortColumns]);
+  }, [filteredHistories, sortColumns]);
 
   // 페이지네이션 계산
   const totalPages = Math.ceil(sortedHistories.length / pageSize);
@@ -74,10 +129,10 @@ const Consultation: React.FC = () => {
 
   const handleReset = () => {
     resetFilters();
-    setStartDate(undefined);
-    setEndDate(undefined);
+    setCurrentPage(0); // 페이지도 초기화
   };
 
+  // 상담완료 badge-gray, 상담사전환-badge-blue, 상담실패-badge-purple, 재연락-badge-orange, 부재-badge-yellow, 무등답-badge-green
   const getStatusBadgeClass = (color: string) => {
     const colorMap: Record<string, string> = {
       purple: 'badge-purple',
@@ -91,6 +146,7 @@ const Consultation: React.FC = () => {
   };
 
   // DataGrid 컬럼 정의
+  // 상담상태, 상담채널은 동그라미 디자인이 들어갑니다 그래서 status-badge,channel-badge 넣었어요 상태값에 따라 색상 바껴요
   const columns = useMemo<Column<ConsultationHistory>[]>(() => [
     { key: 'createdAt', name: '상담일시', width: '12%' },
     { key: 'consultationId', name: '상담ID', width: '10%' },
@@ -156,8 +212,8 @@ const Consultation: React.FC = () => {
             <DateRangePicker
               startDate={startDate}
               endDate={endDate}
-              onStartDateChange={setStartDate}
-              onEndDateChange={setEndDate}
+              onStartDateChange={handleStartDateChange}
+              onEndDateChange={handleEndDateChange}
               startPlaceholder="2025-10-10"
               endPlaceholder="2025-10-10"
             />
@@ -219,29 +275,38 @@ const Consultation: React.FC = () => {
         )}>
         <div className="table-container">
           <div className="data-grid-wrapper">
-            <DataGrid
-              columns={columns}
-              rows={paginatedHistories}
-              rowKeyGetter={(row: ConsultationHistory) => row.id}
-              sortColumns={sortColumns}
-              onSortColumnsChange={setSortColumns}
-              rowClass={(row) => selectedHistory?.id === row.id ? 'row-selected' : ''}
-              defaultColumnOptions={{
-                sortable: true,
-                resizable: false
-              }}
-              className="consultation-data-grid"
-            />
-             {/* 페이지네이션 */}
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                canPreviousPage={currentPage > 0}
-                canNextPage={currentPage < totalPages - 1}
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-              />
+            {sortedHistories.length === 0 ? (
+              <div className="empty-state">
+                <p className="empty-message">조회 결과가 없습니다.</p>
+                <p className="empty-submessage">다른 조건으로 다시 시도해 보세요.</p>
+              </div>
+            ) : (
+              <>
+                <DataGrid
+                  columns={columns}
+                  rows={paginatedHistories}
+                  rowKeyGetter={(row: ConsultationHistory) => row.id}
+                  sortColumns={sortColumns}
+                  onSortColumnsChange={setSortColumns}
+                  rowClass={(row) => selectedHistory?.id === row.id ? 'row-selected' : ''}
+                  defaultColumnOptions={{
+                    sortable: true,
+                    resizable: false
+                  }}
+                  className="consultation-data-grid"
+                />
+                {/* 페이지네이션 */}
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  canPreviousPage={currentPage > 0}
+                  canNextPage={currentPage < totalPages - 1}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </>
+            )}
           </div>
         </div>
 

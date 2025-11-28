@@ -130,7 +130,7 @@
   border-bottom: 1px solid #ECEDF0;
 }
 
-/* 선택된 행 하이라이트 */
+/* 선택된 행 하이라이트 
 .consultation-data-grid .row-selected {
   background-color: #F0F9FF !important;
 }
@@ -138,7 +138,7 @@
 .consultation-data-grid .row-selected:hover {
   background-color: #F0F9FF !important;
 }
-
+*/
 /* 상태 배지 */
 .status-badge {
   display: inline-block;
@@ -217,4 +217,31 @@
 
 .btn-icon-consult:hover {
    background-image: url("../assets/images/consult_on.png");
+}
+.row-selected .btn-icon-consult{
+  background-image: url("../assets/images/consult_on.png");
+}
+
+/* 빈 상태 메시지 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  height: 100%;
+}
+
+.empty-message {
+  font-size: 17px;
+  font-weight: 500;
+  color: #282828;
+  margin: 0 0 8px 0;
+}
+
+.empty-submessage {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
 }
