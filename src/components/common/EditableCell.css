@@ -1,0 +1,16 @@
+/* EditableCell Styles */
+.table-input {
+  width: 100%;
+  padding: 4px 8px;
+  transition: all 0.2s;
+  border-color: transparent;
+}
+
+.table-input:focus {
+  outline: none;
+  border-color: #555;
+}
+
+.table-input::placeholder {
+  color: #9ca3af;
+}

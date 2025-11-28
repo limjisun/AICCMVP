@@ -1,16 +1,15 @@
 import * as React from 'react';
+import './Table.css';
 
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="table-wrapper">
-    <table
-      ref={ref}
-      className={`table ${className || ''}`}
-      {...props}
-    />
-  </div>
+  <table
+    ref={ref}
+    className={`table ${className || ''}`}
+    {...props}
+  />
 ));
 Table.displayName = 'Table';
 

@@ -26,6 +26,7 @@
   font-weight: normal;
   color: #282828;
   border-top: 1px solid #ECEDF0;
+  border-right: 1px solid #ECEDF0;
   border-bottom: 1px solid #ECEDF0;
   white-space: nowrap;
   user-select: none;

@@ -37,86 +37,29 @@
   border-top-color: #333;
 }
 
-/* Progress Bar */
-.progress-bar {
+/* Usage Area Toggle */
+.usage-area-toggle {
   display: flex;
-  align-items: center;
-}
-.progress-bar:last-child {
-  margin-bottom: 0;
-}
-.progress-bar__label {
-  font-size: 12px;
-  color: #777;
-  min-width: 50px;
-  display: block;
-}
-.progress-bar__track {
-  width: 100%;
-  height: 6px;
-  background: #F1F3F6;
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-.progress-bar__fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-.progress-bar__fill--level-1 {
-  background: #D65E5F;
-}
-.progress-bar__fill--level-2 {
-  background: #697D86;
-}
-.progress-bar__fill--level-3 {
-  background: #799BA9;
-}
-.progress-bar__fill--level-4 {
-  background: #9CB5BF;
-}
-.progress-bar__fill--level-5 {
-  background: #B4CED9;
+  justify-content: center;
+  gap: 4px;
 }
 
-/* Animations */
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.stat-card__number {
-  animation: countUp 0.6s ease;
+.usage-btn {
+  padding: 0px 12px;
+  font-size: 13px;
+  height: 22px;
+  font-weight: 500;
+  border: 1px solid #EAEBEF;
+  border-radius: 100px;
+  background: white;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.usage-btn--active {
+  background: #EBECF0;
 }
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 
 /*버튼*/
 .btn-flex-wrap{
@@ -134,9 +77,99 @@
   border: 1px solid #72B5BB;
   font-weight: 600;
   color: #509298;
+  background:#fff ;
+}
+.btn-basic.btn-line2{
+  border: 1px solid #CFD3DA;
+  font-weight: 400;
+  color: #555;
+  background:#fff ;
 }
 .btn-basic.btn-bg{
   background: #4BB6C0;
   font-weight: 600;
   color: #FFF;
+}
+.btn-table{
+  border-radius: 3px;
+  border: 1px solid #CFD3DA;
+  background: #FFF;
+  color: #555;
+  padding: 0 8px;
+  height: 22px;
+}
+
+
+/* DataGrid 스타일 */
+.rdg {
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 13px;
+}
+
+.rdg-header-row {
+  background: #f9fafb;
+  font-weight: normal;
+  font-size: 13px;
+  color: #282828;
+}
+
+.rdg-cell {
+  border-right: none;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  color: #555;
+}
+.rdg-header-row .rdg-cell{
+   border-right: 1px solid #ECEDF0;
+}
+.rdg-cell[aria-selected='true'] {
+  outline: none;
+  box-shadow: none;
+}
+
+.rdg-cell:hover {
+  background-color: transparent !important;
+}
+
+.rdg-row:hover {
+  background-color: transparent !important;
+}
+.rdg-header-cell {
+  border-right: 1px solid #ECEDF0;
+  border-top: 1px solid #ECEDF0;
+  border-bottom: 1px solid #ECEDF0;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+
+/* DataGrid 중앙정렬 클래스 */
+.cell-center {
+  justify-content: center;
+}
+
+.header-center {
+  justify-content: center;
+}
+
+/* DataGrid 정렬 화살표 커스터마이징 */
+.rdg-sort-arrow {
+  width: 7px;
+  height: 11px;
+  padding-top: 4px;
+  margin-left: 4px;
+  fill: #999;
+}
+
+/* 정렬 상태에 따른 색상 변경 */
+.rdg-header-sort-cell[aria-sort='ascending'] .rdg-sort-arrow,
+.rdg-header-sort-cell[aria-sort='descending'] .rdg-sort-arrow {
+  fill: #333;
+}
+.table-head-center{
+  justify-content: center;
 }

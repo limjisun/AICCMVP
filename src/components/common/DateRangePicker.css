@@ -1,0 +1,73 @@
+/* DateRangePicker Styles */
+.date-range-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.month-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.month-btn {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #C3C5D3;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+}
+
+.month-btn:hover {
+  background: #A8ABC0;
+  color: #fff;
+}
+
+.month-btn.active {
+  background: #A8ABC0;
+  color: #fff;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.date-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 28px;
+  min-width: 120px;
+  padding: 0 8px;
+  border: 1px solid #D9DBE4;
+  border-radius: 4px;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.date-button:hover {
+  border-color: #555;
+}
+
+.date-button .icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.date-button-placeholder {
+  color: #9ca3af;
+}
+
+.date-separator {
+  color: #6b7280;
+  flex-shrink: 0;
+}

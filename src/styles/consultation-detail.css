@@ -1,0 +1,314 @@
+.detail-panel {
+  flex: 0.4;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+.detail-header {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detail-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #06b6d4;
+}
+
+.detail-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.detail-close-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detail-close-btn:hover {
+  background: #f3f4f6;
+}
+
+.detail-close-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 바디 */
+.detail-body {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+}
+
+/* 섹션 */
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section-border {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-section-border-top {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-weight: 500;
+}
+
+.detail-sub-value {
+  font-size: 14px;
+  color: #4b5563;
+  margin-top: 4px;
+}
+
+/* 메시지 박스 */
+.detail-message-box {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.detail-message-text {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.detail-message-time {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* 정보 박스 */
+.detail-info-box {
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.detail-info-warning {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+
+.detail-info-primary {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.detail-info-text {
+  font-size: 14px;
+  color: #374151;
+}
+
+.detail-info-text-bold {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 8px;
+}
+
+.detail-info-warning .detail-info-text {
+  color: #9a3412;
+}
+
+/* 공지 */
+.detail-notice {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.detail-notice-highlight {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* 필드 */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-grid-item,
+.detail-field {
+  margin-bottom: 16px;
+}
+
+.detail-field-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.detail-field-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 정보 행 */
+.detail-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.detail-info-row-start {
+  align-items: flex-start;
+}
+
+.detail-info-row-label {
+  font-size: 12px;
+  color: #6b7280;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.detail-info-memo {
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* 태그 */
+.detail-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.detail-tag {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.detail-tag-cyan {
+  background: #cffafe;
+  color: #0e7490;
+}
+
+.detail-tag-pink {
+  background: #fce7f3;
+  color: #be185d;
+}
+
+.detail-tag-gray {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* 통계 */
+.detail-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.detail-stat-card {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.detail-stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.detail-stat-value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.detail-stat-unit {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+/* 카테고리 버튼 */
+.detail-category-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.detail-category-btn {
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detail-category-btn:hover {
+  background: #e5e7eb;
+}
+
+/* 패널 레이아웃 */
+.detail-panel-stt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 대화 영역 */
+.detail-conversation-area {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin-top: 10px;
+  background: #F7F7FB;
+  padding: 16px;
+  border-radius: 8px;
+}

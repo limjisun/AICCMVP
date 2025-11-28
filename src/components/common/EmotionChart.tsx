@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { EmotionPoint } from '../../types';
+import './EmotionChart.css';
 
 interface EmotionChartProps {
   data: EmotionPoint[];

@@ -1,15 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import * as XLSX from 'xlsx';
-import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  type ColumnDef,
-  type SortingState,
-  flexRender,
-} from '@tanstack/react-table';
+import { DataGrid } from 'react-data-grid';
+import type { Column, SortColumn } from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
 import type {
   KeywordTabType,
   SynonymItem,
@@ -21,14 +14,6 @@ import { Checkbox } from '../common/Checkbox';
 import { EditableCell } from '../common/EditableCell';
 import { Select } from '../common/Select';
 import Tooltip from '../common/Tooltip';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from '../common/Table';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,8 +36,10 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
     MisrecognitionItem[]
   >([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [rowSelection, setRowSelection] = useState({});
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [selectedRows, setSelectedRows] = useState<ReadonlySet<string>>(new Set());
+  const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 현재 탭에 따른 키워드 데이터
@@ -225,13 +212,11 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
 
   // 선택된 행 삭제
   const handleDeleteSelected = () => {
-    const selectedIds = Object.keys(rowSelection);
-    const selectedIndexes = selectedIds.map(Number);
     const filteredData = filteredKeywords.filter(
-      (_, index) => !selectedIndexes.includes(index)
+      (kw) => !selectedRows.has(kw.id)
     );
     setKeywords(filteredData as any);
-    setRowSelection({});
+    setSelectedRows(new Set());
   };
 
   // 취소 (신규건만 - 행 삭제)
@@ -298,316 +283,309 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
     }
   }, [keywords, searchQuery, tabType]);
 
+  // 정렬 처리
+  const sortedKeywords = useMemo(() => {
+    if (sortColumns.length === 0) return filteredKeywords;
+
+    return [...filteredKeywords].sort((a, b) => {
+      for (const sort of sortColumns) {
+        const aValue = a[sort.columnKey as keyof typeof a];
+        const bValue = b[sort.columnKey as keyof typeof b];
+        if (aValue === undefined || bValue === undefined) continue;
+        const compareResult = aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+        if (compareResult !== 0) {
+          return sort.direction === 'ASC' ? compareResult : -compareResult;
+        }
+      }
+      return 0;
+    });
+  }, [filteredKeywords, sortColumns]);
+
+  // 페이지네이션
+  const totalPages = Math.ceil(sortedKeywords.length / pageSize);
+  const startIndex = currentPage * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedKeywords = sortedKeywords.slice(startIndex, endIndex);
+
   // 동의어 테이블 컬럼 정의
-  const synonymColumns = useMemo<ColumnDef<SynonymItem>[]>(
+  const synonymColumns = useMemo<Column<SynonymItem>[]>(
     () => [
       {
-        id: 'select',
-        header: ({ table }) => (
+        key: 'select',
+        name: '',
+        width: '5%',
+        headerCellClass: 'table-head-center',
+        cellClass: 'cell-center',
+        renderHeaderCell: () => (
           <Checkbox
-            checked={table.getIsAllPageRowsSelected()}
-            indeterminate={table.getIsSomePageRowsSelected()}
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            disabled={!row.getCanSelect()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-          />
-        ),
-        enableSorting: false,
-        size: 40,
-      },
-      {
-        accessorKey: 'date',
-        header: '최근수정일시',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return <span className="table-date">{kw.date}</span>;
-        },
-        size: 150,
-      },
-      {
-        accessorKey: 'representative',
-        header: '대표 키워드',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <EditableCell
-              value={kw.representative}
-              onChange={(value) =>
-                handleFieldChange(kw.id, 'representative', value)
+            checked={selectedRows.size === paginatedKeywords.length && paginatedKeywords.length > 0}
+            indeterminate={selectedRows.size > 0 && selectedRows.size < paginatedKeywords.length}
+            onCheckedChange={(checked) => {
+              if (checked) {
+                setSelectedRows(new Set(paginatedKeywords.map(kw => kw.id)));
+              } else {
+                setSelectedRows(new Set());
               }
-              placeholder="대표 키워드 입력"
-            />
-          );
-        },
-        size: 200,
+            }}
+          />
+        ),
+        renderCell: ({ row }) => (
+          <Checkbox
+            checked={selectedRows.has(row.id)}
+            onCheckedChange={(checked) => {
+              const newSelection = new Set(selectedRows);
+              if (checked) {
+                newSelection.add(row.id);
+              } else {
+                newSelection.delete(row.id);
+              }
+              setSelectedRows(newSelection);
+            }}
+          />
+        ),
       },
       {
-        accessorKey: 'synonyms',
-        header: '유사어',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <EditableCell
-              value={kw.synonyms}
-              onChange={(value) => handleFieldChange(kw.id, 'synonyms', value)}
-              placeholder="유사어 입력 (쉼표로 구분)"
-            />
-          );
-        },
-        size: 250,
+        key: 'date',
+        name: '최근수정일시',
+        width: '15%',
+        renderCell: ({ row }) => <span className="table-date">{row.date}</span>,
       },
       {
-        accessorKey: 'usageArea',
-        header: () => (
+        key: 'representative',
+        name: '대표 키워드',
+        width: '20%',
+        renderCell: ({ row }) => (
+          <EditableCell
+            value={row.representative}
+            onChange={(value) => handleFieldChange(row.id, 'representative', value)}
+            placeholder="대표 키워드 입력"
+          />
+        ),
+      },
+      {
+        key: 'synonyms',
+        name: '유사어',
+        width: '25%',
+        renderCell: ({ row }) => (
+          <EditableCell
+            value={row.synonyms}
+            onChange={(value) => handleFieldChange(row.id, 'synonyms', value)}
+            placeholder="유사어 입력 (쉼표로 구분)"
+          />
+        ),
+      },
+      {
+        key: 'usageArea',
+        name: '사용영역',
+        width: '15%',
+        cellClass: 'cell-center',
+        renderHeaderCell: () => (
           <Tooltip text="금지어: 고객 응대 시 사용하지 말아야 할 단어 / 부정어: 부정적인 의미를 가진 단어">
             사용영역
           </Tooltip>
         ),
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <div className="usage-area-toggle">
-              <button
-                className={`usage-btn ${
-                  kw.usageArea === 'forbidden' ? 'usage-btn--active' : ''
-                }`}
-                onClick={() =>
-                  handleFieldChange(kw.id, 'usageArea', 'forbidden')
-                }
-              >
-                금지어
-              </button>
-              <button
-                className={`usage-btn ${
-                  kw.usageArea === 'negative' ? 'usage-btn--active' : ''
-                }`}
-                onClick={() =>
-                  handleFieldChange(kw.id, 'usageArea', 'negative')
-                }
-              >
-                부정어
-              </button>
-            </div>
-          );
-        },
-        enableSorting: false,
-        size: 150,
+        renderCell: ({ row }) => (
+          <div className="usage-area-toggle">
+            <button
+              className={`usage-btn ${
+                row.usageArea === 'forbidden' ? 'usage-btn--active' : ''
+              }`}
+              onClick={() => handleFieldChange(row.id, 'usageArea', 'forbidden')}
+            >
+              금지어
+            </button>
+            <button
+              className={`usage-btn ${
+                row.usageArea === 'negative' ? 'usage-btn--active' : ''
+              }`}
+              onClick={() => handleFieldChange(row.id, 'usageArea', 'negative')}
+            >
+              부정어
+            </button>
+          </div>
+        ),
       },
       {
-        id: 'actions',
-        header: '',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <div className="table-actions">
-              {/* 신규건: 취소, 저장 */}
-              {kw.isNew && (
-                <>
-                <div className="btn-flex-wrap">
-                    <button
-                      onClick={() => handleCancel(kw.id)}
-                      className="btn-table btn-cancel"
-                    >
-                      취소
-                    </button>
-                    <button
-                      onClick={() => handleSave(kw.id)}
-                      className="btn-table btn-save"
-                    >
-                      저장
-                    </button>
-                  </div>
-                </>
-              )}
-              {/* 저장된 건: 삭제만 (수정하지 않은 경우) */}
-              {!kw.isNew && !kw.isDirty && (
+        key: 'actions',
+        name: '',
+        width: '20%',
+        cellClass: 'cell-center',
+        renderCell: ({ row }) => (
+          <div className="table-actions">
+            {/* 신규건: 취소, 저장 */}
+            {row.isNew && (
+              <div className="btn-flex-wrap">
                 <button
-                  onClick={() => handleDelete(kw.id)}
+                  onClick={() => handleCancel(row.id)}
+                  className="btn-table btn-cancel"
+                >
+                  취소
+                </button>
+                <button
+                  onClick={() => handleSave(row.id)}
+                  className="btn-table btn-save"
+                >
+                  저장
+                </button>
+              </div>
+            )}
+            {/* 저장된 건: 삭제만 (수정하지 않은 경우) */}
+            {!row.isNew && !row.isDirty && (
+              <button
+                onClick={() => handleDelete(row.id)}
+                className="btn-table btn-delete"
+              >
+                삭제
+              </button>
+            )}
+            {/* 저장된 건 수정 시: 삭제, 저장 */}
+            {!row.isNew && row.isDirty && (
+              <>
+                <button
+                  onClick={() => handleDelete(row.id)}
                   className="btn-table btn-delete"
                 >
                   삭제
                 </button>
-              )}
-              {/* 저장된 건 수정 시: 삭제, 저장 */}
-              {!kw.isNew && kw.isDirty && (
-                <>
-                  <button
-                    onClick={() => handleDelete(kw.id)}
-                    className="btn-table btn-delete"
-                  >
-                    삭제
-                  </button>
-                  <button
-                    onClick={() => handleSave(kw.id)}
-                    className="btn-table btn-save"
-                  >
-                    저장
-                  </button>
-                </>
-              )}
-            </div>
-          );
-        },
-        enableSorting: false,
-        size: 180,
+                <button
+                  onClick={() => handleSave(row.id)}
+                  className="btn-table btn-save"
+                >
+                  저장
+                </button>
+              </>
+            )}
+          </div>
+        ),
       },
     ],
-    [handleFieldChange, handleDelete, handleCancel, handleSave]
+    [handleFieldChange, handleDelete, handleCancel, handleSave, selectedRows, paginatedKeywords]
   );
 
   // 오인식 교정 테이블 컬럼 정의
-  const misrecognitionColumns = useMemo<ColumnDef<MisrecognitionItem>[]>(
+  const misrecognitionColumns = useMemo<Column<MisrecognitionItem>[]>(
     () => [
       {
-        id: 'select',
-        header: ({ table }) => (
+        key: 'select',
+        name: '',
+        width: '5%',
+        headerCellClass: 'table-head-center',
+        renderHeaderCell: () => (
           <Checkbox
-            checked={table.getIsAllPageRowsSelected()}
-            indeterminate={table.getIsSomePageRowsSelected()}
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
+            checked={selectedRows.size === paginatedKeywords.length && paginatedKeywords.length > 0}
+            indeterminate={selectedRows.size > 0 && selectedRows.size < paginatedKeywords.length}
+            onCheckedChange={(checked) => {
+              if (checked) {
+                setSelectedRows(new Set(paginatedKeywords.map(kw => kw.id)));
+              } else {
+                setSelectedRows(new Set());
+              }
+            }}
           />
         ),
-        cell: ({ row }) => (
+        renderCell: ({ row }) => (
           <Checkbox
-            checked={row.getIsSelected()}
-            disabled={!row.getCanSelect()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            checked={selectedRows.has(row.id)}
+            onCheckedChange={(checked) => {
+              const newSelection = new Set(selectedRows);
+              if (checked) {
+                newSelection.add(row.id);
+              } else {
+                newSelection.delete(row.id);
+              }
+              setSelectedRows(newSelection);
+            }}
           />
         ),
-        enableSorting: false,
-        size: 40,
       },
       {
-        accessorKey: 'date',
-        header: '최근수정일시',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return <span className="table-date">{kw.date}</span>;
-        },
-        size: 150,
+        key: 'date',
+        name: '최근수정일시',
+        width: '20%',
+        renderCell: ({ row }) => <span className="table-date">{row.date}</span>,
       },
       {
-        accessorKey: 'correctedWord',
-        header: '교정어',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <EditableCell
-              value={kw.correctedWord}
-              onChange={(value) =>
-                handleFieldChange(kw.id, 'correctedWord', value)
-              }
-              placeholder="교정어 입력"
-            />
-          );
-        },
-        size: 250,
+        key: 'correctedWord',
+        name: '교정어',
+        width: '30%',
+        renderCell: ({ row }) => (
+          <EditableCell
+            value={row.correctedWord}
+            onChange={(value) => handleFieldChange(row.id, 'correctedWord', value)}
+            placeholder="교정어 입력"
+          />
+        ),
       },
       {
-        accessorKey: 'misrecognizedWord',
-        header: '오인식어',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <EditableCell
-              value={kw.misrecognizedWord}
-              onChange={(value) =>
-                handleFieldChange(kw.id, 'misrecognizedWord', value)
-              }
-              placeholder="오인식어 입력 (쉼표로 구분)"
-            />
-          );
-        },
-        size: 250,
+        key: 'misrecognizedWord',
+        name: '오인식어',
+        width: '30%',
+        renderCell: ({ row }) => (
+          <EditableCell
+            value={row.misrecognizedWord}
+            onChange={(value) => handleFieldChange(row.id, 'misrecognizedWord', value)}
+            placeholder="오인식어 입력 (쉼표로 구분)"
+          />
+        ),
       },
       {
-        id: 'actions',
-        header: '버튼',
-        cell: ({ row }) => {
-          const kw = row.original;
-          return (
-            <div className="table-actions">
-              {/* 신규건: 취소, 저장 */}
-              {kw.isNew && (
-                <>
-                  <button
-                    onClick={() => handleCancel(kw.id)}
-                    className="btn-table btn-cancel"
-                  >
-                    취소
-                  </button>
-                  <button
-                    onClick={() => handleSave(kw.id)}
-                    className="btn-table btn-save"
-                  >
-                    저장
-                  </button>
-                </>
-              )}
-              {/* 저장된 건: 삭제만 (수정하지 않은 경우) */}
-              {!kw.isNew && !kw.isDirty && (
+        key: 'actions',
+        name: '버튼',
+        width: '15%',
+        renderCell: ({ row }) => (
+          <div className="table-actions">
+            {/* 신규건: 취소, 저장 */}
+            {row.isNew && (
+              <>
                 <button
-                  onClick={() => handleDelete(kw.id)}
+                  onClick={() => handleCancel(row.id)}
+                  className="btn-table btn-cancel"
+                >
+                  취소
+                </button>
+                <button
+                  onClick={() => handleSave(row.id)}
+                  className="btn-table btn-save"
+                >
+                  저장
+                </button>
+              </>
+            )}
+            {/* 저장된 건: 삭제만 (수정하지 않은 경우) */}
+            {!row.isNew && !row.isDirty && (
+              <button
+                onClick={() => handleDelete(row.id)}
+                className="btn-table btn-delete"
+              >
+                삭제
+              </button>
+            )}
+            {/* 저장된 건 수정 시: 삭제, 저장 */}
+            {!row.isNew && row.isDirty && (
+              <>
+                <button
+                  onClick={() => handleDelete(row.id)}
                   className="btn-table btn-delete"
                 >
                   삭제
                 </button>
-              )}
-              {/* 저장된 건 수정 시: 삭제, 저장 */}
-              {!kw.isNew && kw.isDirty && (
-                <>
-                  <button
-                    onClick={() => handleDelete(kw.id)}
-                    className="btn-table btn-delete"
-                  >
-                    삭제
-                  </button>
-                  <button
-                    onClick={() => handleSave(kw.id)}
-                    className="btn-table btn-save"
-                  >
-                    저장
-                  </button>
-                </>
-              )}
-            </div>
-          );
-        },
-        enableSorting: false,
-        size: 180,
+                <button
+                  onClick={() => handleSave(row.id)}
+                  className="btn-table btn-save"
+                >
+                  저장
+                </button>
+              </>
+            )}
+          </div>
+        ),
       },
     ],
-    [handleFieldChange, handleDelete, handleCancel, handleSave]
+    [handleFieldChange, handleDelete, handleCancel, handleSave, selectedRows, paginatedKeywords]
   );
 
   // 현재 탭에 따른 컬럼 선택
   const columns = tabType === 'synonym' ? synonymColumns : misrecognitionColumns;
-
-  // TanStack Table 설정
-  const table = useReactTable({
-    data: filteredKeywords as any,
-    columns: columns as any,
-    state: {
-      sorting,
-      rowSelection,
-    },
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
 
   // 빈 화면 처리
   if (keywords.length === 0) {
@@ -642,9 +620,8 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
               },
             ]}
           />
-          <button className="btn-basic btn-bg">추가</button>
+          <button className="btn-basic btn-bg" onClick={handleAddNew}>추가</button>
         </div>
-
       </div>
     );
   }
@@ -663,12 +640,11 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
           />
         </div>
         <div className="btn-flex-wrap">
-        
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button
                 className="btn-basic btn-line"
-                disabled={Object.keys(rowSelection).length === 0}
+                disabled={selectedRows.size === 0}
               >
                 삭제
               </button>
@@ -676,11 +652,13 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                   대표키워드 {Object.keys(rowSelection).length}를 삭제하시겠어요?
+                  대표키워드 {selectedRows.size}를 삭제하시겠어요?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                   대표키워드를 삭제하면 관련된 <br/>
-                  {tabType === 'synonym' ? '모든 동의어 세트가 함께 제거됩니다.' : '모든 오인식어 세트가 함께 제거됩니다.'}
+                  대표키워드를 삭제하면 관련된 <br />
+                  {tabType === 'synonym'
+                    ? '모든 동의어 세트가 함께 제거됩니다.'
+                    : '모든 오인식어 세트가 함께 제거됩니다.'}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -691,13 +669,9 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          
+
           <Dropdown
-            trigger={
-              <button className="btn-basic btn-line">
-                업로드
-              </button>
-            }
+            trigger={<button className="btn-basic btn-line">업로드</button>}
             items={[
               { label: '양식 다운로드', onClick: downloadTemplate },
               {
@@ -713,62 +687,26 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
             onChange={handleFileUpload}
             className="keywords-upload-input"
           />
-          <button
-            className="btn-basic btn-bg"
-            onClick={handleAddNew}
-          >
+          <button className="btn-basic btn-bg" onClick={handleAddNew}>
             추가
           </button>
-          
         </div>
       </div>
 
       {/* 테이블 */}
       <div className="keywords-table-wrapper">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    style={{ width: header.getSize() }}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={
-                      header.column.getCanSort() ? 'cursor-pointer' : ''
-                    }
-                  >
-                    <div className={`table-head-content ${header.column.id === 'select' ? 'table-head-center' : ''}`}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {header.column.getIsSorted() && (
-                        <span className="sort-indicator">
-                          {header.column.getIsSorted() === 'asc' ? ' ↑' : ' ↓'}
-                        </span>
-                      )}
-                    </div>
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={cell.column.id === 'select' ? 'table-cell-center' : ''}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataGrid
+          columns={columns as Column<SynonymItem | MisrecognitionItem>[]}
+          rows={paginatedKeywords as (SynonymItem | MisrecognitionItem)[]}
+          rowKeyGetter={(row) => row.id}
+          sortColumns={sortColumns}
+          onSortColumnsChange={setSortColumns}
+          defaultColumnOptions={{
+            sortable: true,
+            resizable: true
+          }}
+          className="keywords-data-grid"
+        />
       </div>
 
       {/* 페이지네이션 */}
@@ -777,41 +715,34 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
           {/* 이전 그룹으로 (10페이지씩) */}
           <button
             onClick={() => {
-              const currentPage = table.getState().pagination.pageIndex;
               const maxPages = 10;
               const currentGroup = Math.floor(currentPage / maxPages);
               const prevGroupStart = (currentGroup - 1) * maxPages;
-              table.setPageIndex(Math.max(0, prevGroupStart));
+              setCurrentPage(Math.max(0, prevGroupStart));
             }}
-            disabled={table.getState().pagination.pageIndex < 10}
+            disabled={currentPage < 10}
             className="pagination-arrow pagination-left01"
-          >
-          </button>
+          ></button>
 
           {/* 이전 페이지 */}
           <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 0}
             className="pagination-arrow pagination-left02"
-          >
-          </button>
+          ></button>
 
           {/* 페이지 번호 버튼들 */}
           {(() => {
-            const currentPage = table.getState().pagination.pageIndex;
-            const pageCount = table.getPageCount();
             const maxPages = 10;
-
-            // 시작 페이지 계산 (10개씩 묶음)
             const startPage = Math.floor(currentPage / maxPages) * maxPages;
-            const endPage = Math.min(startPage + maxPages, pageCount);
+            const endPage = Math.min(startPage + maxPages, totalPages);
 
             const pages = [];
             for (let i = startPage; i < endPage; i++) {
               pages.push(
                 <button
                   key={i}
-                  onClick={() => table.setPageIndex(i)}
+                  onClick={() => setCurrentPage(i)}
                   className={`pagination-btn pagination-number ${
                     currentPage === i ? 'active' : ''
                   }`}
@@ -820,43 +751,40 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ tabType }) => {
                 </button>
               );
             }
-
             return pages;
           })()}
 
           {/* 다음 페이지 */}
           <button
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage >= totalPages - 1}
             className="pagination-arrow pagination-right02"
-          >
-          </button>
+          ></button>
 
           {/* 다음 그룹으로 (10페이지씩) */}
           <button
             onClick={() => {
-              const currentPage = table.getState().pagination.pageIndex;
-              const pageCount = table.getPageCount();
               const maxPages = 10;
               const currentGroup = Math.floor(currentPage / maxPages);
               const nextGroupStart = (currentGroup + 1) * maxPages;
-              table.setPageIndex(Math.min(pageCount - 1, nextGroupStart));
+              setCurrentPage(Math.min(totalPages - 1, nextGroupStart));
             }}
             disabled={
-              Math.floor(table.getState().pagination.pageIndex / 10) >=
-              Math.floor((table.getPageCount() - 1) / 10)
+              Math.floor(currentPage / 10) >= Math.floor((totalPages - 1) / 10)
             }
             className="pagination-arrow pagination-right01"
-          >
-          </button>
+          ></button>
 
           <Select
-            value={table.getState().pagination.pageSize}
-            options={[10, 20, 30, 40, 50].map((pageSize) => ({
-              label: `Show ${pageSize}`,
-              value: pageSize,
+            value={pageSize}
+            options={[10, 20, 30, 40, 50].map((size) => ({
+              label: `Show ${size}`,
+              value: size,
             }))}
-            onChange={(value) => table.setPageSize(Number(value))}
+            onChange={(value) => {
+              setPageSize(Number(value));
+              setCurrentPage(0);
+            }}
           />
         </div>
       </div>

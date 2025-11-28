@@ -103,9 +103,7 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session, isOpen, onClose 
                         <div className="conversation-bubble">
                           {msg.isTyping ? (
                             <div className="conversation-typing">
-                              <span></span>
-                              <span></span>
-                              <span></span>
+                    
                             </div>
                           ) : (
                             <div className="conversation-text">{msg.message}</div>

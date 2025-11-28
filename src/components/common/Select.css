@@ -18,22 +18,16 @@
   padding: 0px 8px;
   height: 28px;
   background-color: white;
-  border: 1px solid #555;
-  border-radius: 6px;
+  border: 1px solid #D1D4E2;
+  border-radius: 4px;
   cursor: pointer;
   transition: border-color 0.2s;
   gap: 8px;
 }
 
-.custom-select__trigger:hover:not(.custom-select--disabled .custom-select__trigger) {
-  border-color: #9ca3af;
-}
-/*
 .custom-select--open .custom-select__trigger {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: #555;
 }
-*/
 .custom-select__value {
   flex: 1;
   font-size: 14px;

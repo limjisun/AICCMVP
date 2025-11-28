@@ -17,14 +17,11 @@
 /* Session Detail Panel Styles */
 @import './session-detail.css';
 
-/* Emotion Chart Styles */
-@import './emotion-chart.css';
-
 /* Keywords Page Styles */
 @import './keywords.css';
 
-/* Dropdown Menu Styles */
-@import './dropdown.css';
+/* Consultation Page Styles */
+@import './consultation.css';
 
-/* Table Styles */
-@import './table.css';
+/* Consultation Detail Panel Styles */
+@import './consultation-detail.css';

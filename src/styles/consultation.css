@@ -1,0 +1,220 @@
+.consultation-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.consultation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* 필터 영역 */
+.consultation-filters {
+  border-top: 1px solid #D9DBE4;
+  border-bottom: 1px solid #D9DBE4;
+  background: #F9F9FB;
+  padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-row {
+  display: flex;
+  gap: 70px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-item.filter-date {
+  min-width: 0;
+}
+
+.filter-label {
+  display: block;
+  font-size: 13px;
+  color: #111;
+}
+
+.filter-item .custom-select {
+  width: 250px;
+}
+
+.search-input{
+  border: 1px solid #D9DBE4;
+  border-radius: 4px;
+  outline: none;
+  height: 28px;
+  padding: 0px 8px;
+  font-size: 13px;
+  width: 250px;
+}
+.search-input:focus{
+  border-color: #555;
+}
+.keywords-search::placeholder {
+  color: #999;
+}
+@media (max-width: 1900px) {
+  .filter-row {
+    gap: 50px;
+  }
+}
+@media (max-width: 1800px) {
+  .filter-row {
+    gap: 30px;
+  }
+  .search-input, .filter-item .custom-select {
+    width: 180px;
+   }
+  
+}
+@media (max-width: 1540px) {
+  .filter-row {
+    gap: 20px;
+  }
+  .search-input, .filter-item .custom-select {
+    width: 150px;
+   }
+  
+}
+
+/* 테이블 영역 */
+.consultation-content {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.table-container {
+  flex: 1;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s;
+  min-height: 0;
+  min-width: 0;
+}
+
+.consultation-content.table-container-open {
+  
+}
+
+.table-scroll {
+  flex: 1;
+  overflow: auto;
+}
+
+/* DataGrid 스타일 */
+.data-grid-wrapper {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.consultation-data-grid {
+  height: 100%;
+  width: 100%;
+  border-bottom: 1px solid #ECEDF0;
+}
+
+/* 선택된 행 하이라이트 */
+.consultation-data-grid .row-selected {
+  background-color: #F0F9FF !important;
+}
+
+.consultation-data-grid .row-selected:hover {
+  background-color: #F0F9FF !important;
+}
+
+/* 상태 배지 */
+.status-badge {
+  display: inline-block;
+  padding: 0px 10px;
+  border-radius: 9999px;
+  height: 22px;
+  line-height: 22px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-purple {
+  background: #E9E3F2;
+  color: #756593;
+}
+
+.badge-blue {
+  background: #D8E8F2;
+  color: #5A87A2;
+}
+
+.badge-gray {
+  background: #EBEBEB;
+  color: #808080;
+}
+
+.badge-orange {
+  background: #FFE7DA;
+  color: #986C56;
+}
+
+.badge-yellow {
+  background: #FFF2D0;
+  color: #9E824D;
+}
+
+.badge-green {
+  background: #DCF1E0;
+  color: #6D9E75;
+}
+
+/* 채널 배지 */
+.channel-badge {
+  display: inline-block;
+  padding: 0px 10px;
+  border-radius: 9999px;
+  height: 22px;
+  line-height: 22px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #EAEBEF;
+}
+
+.channel-call {
+  background: #EBECF0;
+  color: #444;
+}
+
+.channel-chat {
+  background: #fff;
+  color: #555;
+}
+
+/* 버튼 */
+.btn-icon-consult{
+  width: 24px;
+  height: 22px;
+  background-image: url("../assets/images/consult_off.png");
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon-consult:hover {
+   background-image: url("../assets/images/consult_on.png");
+}

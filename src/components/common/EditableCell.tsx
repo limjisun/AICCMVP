@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './EditableCell.css';
 
 interface EditableCellProps {
   value: string;
